@@ -1,7 +1,8 @@
+import { IniciarSecion } from "../pages/IniciarSecion.jsx";
 export const HomePage = () => {
     return (
-        <div>
-            <h1>HomePage</h1>
-        </div>
+        <main className="flex min-h-screen  dark:bg-bg-dark max-w-[1200px] mx-auto">
+            <IniciarSecion/>
+        </main>
     );
 }

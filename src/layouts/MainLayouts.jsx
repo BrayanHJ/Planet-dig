@@ -1,15 +1,19 @@
 import { Outlet } from "react-router-dom";
-import { SideBar } from "../Components/SideBar/SideBar";
+import { SideBar } from "../Components/SideBar/SideBar.jsx";
 
 export const MainLayouts = () => {
     return (
-        <div>
-            <h1>MainLayouts</h1>
+        <main className='flex h-screen justify-center overflow-hidden bg-white dark:bg-bg-dark text-black dark:text-white transition-colors duration-300'>
 
-            <SideBar />
-            <br />
-            <Outlet />
-            
-        </div>
+            <section className="flex w-full justify-center  max-w-[1300px]">
+                <SideBar/>
+                <section className="flex-1 px-4 h-full">
+                    <Outlet/>
+                </section>
+
+            </section>
+
+
+        </main>
     );
 }
