@@ -1,6 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { motion , AnimatePresence } from "framer-motion";
+
+const inputVariants = {
+  hidden: { x: -200, opacity: 0 },
+  visible: { x: 0, opacity: 1 },
+  exit: { x: 200, opacity: 0 }
+};
+
+const labelVariants = {
+  hidden: { y: -200, opacity: 0 },
+  visible: { y: 0, opacity: 1 },
+  exit: { y: 200, opacity: 0 }
+};
 
 export const IniciarSecion = () => {
     const [usuario, setUsuario] = useState("");
@@ -48,24 +61,80 @@ export const IniciarSecion = () => {
     return (
         <main className="flex items-center justify-center
             text-white bg-blue-950 dark:text-white min-h-screen w-full flex-col text-center">
-            <h1 className="text-4xl font-bold mb-4">Iniciar Seción</h1>
-            <div className="bg-white dark:bg-bg-dark p-8 rounded-lg shadow-md w-full max-w-md  flex justify-center align-center text-black dark:text-white text-center mb-2">
-                <form onSubmit={handleSubmit}>
-                    <label className="block text-sm font-medium text-yellow-500">Usuario</label>
-                    <br />
-                    <input type="text" placeholder="Usuario" value={usuario} onChange={e => setUsuario(e.target.value)} name="usuario" />
-                    <br />
-                    <label className="block text-sm font-medium text-yellow-500">Edad</label>
-                    <br />
-                    <input type="date" placeholder="Edad" value={edad} onChange={e => setEdad(e.target.value)} name="edad" />
-                    <br />
-                    <label className="block text-sm font-medium text-yellow-500 ">Contraseña</label>
-                    <br />
-                    <input type="password" placeholder="Contraseña" value={contrasena} onChange={e => setContrasena(e.target.value)} name="contrasena" />
-                    <br />
-                    <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">Iniciar Seción</button>
-                </form>
-            </div>
+
+            <motion.h1 className="text-4xl font-bold mb-4"
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 2.0 , ease: "easeInOut" }}
+            >
+                Iniciar Seción
+            </motion.h1>
+
+            <AnimatePresence>
+                <motion.div className="bg-white dark:bg-bg-dark p-8 rounded-lg shadow-md w-full max-w-md  flex justify-center align-center text-black dark:text-white text-center mb-2"
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 100, opacity: 0 }}
+                transition={{ duration: 1.5 , ease: "easeInOut" }}
+                >
+                    <form onSubmit={handleSubmit}>
+                        <motion.label className="block text-sm font-medium text-yellow-500"
+                        variants={labelVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        transition={{ duration: 1.5 , ease: "easeInOut" }}
+                        >Usuario</motion.label>
+                        <br />
+                        <motion.input type="text" placeholder="Usuario" value={usuario} onChange={e => setUsuario(e.target.value)} name="usuario" 
+                        variants={inputVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        transition={{ duration: 1.5 , ease: "easeInOut" }}
+                            />
+                        <br />
+                        <motion.label className="block text-sm font-medium text-yellow-500"
+                        variants={labelVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        transition={{ duration: 1.5 , ease: "easeInOut" }}
+                        >Edad</motion.label>
+                        <br />
+                        <motion.input type="date" placeholder="Edad" value={edad} onChange={e => setEdad(e.target.value)} name="edad" 
+                        variants={inputVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        transition={{ duration: 1.5 , ease: "easeInOut" }}
+                            />
+                        <br />
+                        <motion.label className="block text-sm font-medium text-yellow-500"
+                        variants={labelVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        transition={{ duration: 1.5 , ease: "easeInOut" }}
+                        >Contraseña</motion.label>
+                        <br />
+                        <motion.input type="password" placeholder="Contraseña" value={contrasena} onChange={e => setContrasena(e.target.value)} name="contrasena"
+                        variants={inputVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        transition={{ duration: 1.5 , ease: "easeInOut" }}
+                        />
+                        <br />
+                        <motion.button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4"
+                        initial={{ opacity: 0, scale: 0.3 }}
+                        animate={{opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.3 }}
+                        transition={{ duration: 1.5 , ease: "easeInOut" }}
+                        >Iniciar Seción</motion.button>
+                    </form>
+                </motion.div>
+            </AnimatePresence>
             <br />
             <p>
                 link de inicio exitoso , deve enviar mesaje por consola De momento

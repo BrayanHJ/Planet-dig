@@ -1,27 +1,60 @@
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
+const mysql = require("mysql2");
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post("/api/login", (req, res) => {
-    const { usuario, edad, contrasena } = req.body;
-    if (usuario === "Brayan" && contrasena === "1234") {
-        const year = edad ? new Date(edad).getFullYear() : null;
-        const edadCalculada = year ? 2025 - year : "desconocida";
-        res.json({
-            success: true,
-            mensaje: `¡Login correcto, ${usuario}! Tu edad es de: ${edadCalculada} años.`
-        });
 
+
+// CONEXION a BASE DE DATOS
+const connection = mysql.createConnection({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+});
+
+connection.connect((err) => {
+    if (err) {
+        console.error("Error de conexión a MySQL:", err);
     } else {
-        res.json({ success: false, mensaje: "Credenciales incorrectas" });
+        console.log("Conectado a MySQL");
     }
 });
 
-app.listen(3000, () => console.log("Servidor iniciado en puerto 3000"));
 
+//API´s
 
-// Iniciar SERVIDOR
+app.post("/api/login", (req, res) => {
+    const { usuario, contrasena } = req.body;
+    connection.query(
+        "SELECT * FROM usuarios WHERE usuario = ? AND contrasena = ?",
+        [usuario, contrasena],
+        (err, results) => {
+            if (err) {
+                res.json({ success: false, mensaje: "Error en el servidor" });
+            } else if (results.length > 0) {
+                res.json({ success: true, mensaje: `¡Login correcto, ${usuario}!` });
+            } else {
+                res.json({ success: false, mensaje: "Credenciales incorrectas" });
+            }
+        }
+    );
+});
 
-// node src/api/login/server.cjs
+app.get("/api/usuarios", (req, res) => {
+    connection.query("SELECT * FROM usuarios", (err, results) => {
+        if (err) {
+            res.json({ success: false, mensaje: "Error en el servidor" });
+        } else {
+            res.json({ success: true, usuarios: results });
+        }
+    });
+});
+
+app.listen(3000, () => {
+    console.log("Servidor escuchando en el puerto 3000");
+});
