@@ -5,12 +5,12 @@ import { BtnToggleTheme } from "../ui/Buttons/BtnToggleTheme.jsx";
 export const SideBar = () => {
     const Links=[
         {label: "Home", Icon: "mdi:home", to: "/"},
-        {label: "Notificaciones", Icon: "mdi:bell", to: "/notificaciones"},
-        {label: "Mensajes", Icon: "mdi:message", to: "/mensajes"},
-        {label: "Perfil", Icon: "mdi:account", to: "/perfil"},
-        {label: "Colecciones", Icon: "mdi:collection", to: "/colecciones"},
-        {label: "Añadir Tarjeta", Icon: "mdi:credit-card-plus", to: "/configuracion"},
-        {label: "Mi perfil", Icon: "mdi:account", to: "/configuracion"},
+        {label: "Tareas", Icon: "mdi:bell", to: "/Task"},
+        {label: "Tablas", Icon: "mdi:message", to: "/mensajes"},
+        {label: "Grafica", Icon: "mdi:account", to: "/perfil"},
+        {label: "Avances", Icon: "mdi:collection", to: "/colecciones"},
+        {label: "Usuario", Icon: "mdi:credit-card-plus", to: "/configuracion"},
+        {label: "Configuracion", Icon: "mdi:account", to: "/configuracion"},
         ]
     return (
         <div className="h-full p-2 bg-white dark:bg-bg-dark text-white transition-colors duration-300 flex flex-col">

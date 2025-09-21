@@ -29,7 +29,6 @@ export const Succes = () => {
                             <thead>
                                 <tr className="bg-blue-100 dark:bg-blue-900">
                                     <th className="py-2 px-4 border-b">ID</th>
-                                    <th className="py-2 px-4 border-b">Correo</th>
                                     <th className="py-2 px-4 border-b">Usuario</th>
                                     <th className="py-2 px-4 border-b">Password</th>
                                     <th className="py-2 px-4 border-b">Rol</th>
@@ -39,10 +38,9 @@ export const Succes = () => {
                                 {usuarios.map(u => (
                                     <tr key={u.id} className="hover:bg-blue-50 dark:hover:bg-black/30">
                                         <td className="py-2 px-4 border-b">{u.id}</td>
-                                        <td className="py-2 px-4 border-b">{u.Correo}</td>
-                                        <td className="py-2 px-4 border-b">{u.usuario}</td>
-                                        <td className="py-2 px-4 border-b">{u.password}</td>
-                                        <td className="py-2 px-4 border-b">{u.rol}</td>
+                                        <td className="py-2 px-4 border-b">{u.Nombre}</td>
+                                        <td className="py-2 px-4 border-b">{u.Password}</td>
+                                        <td className="py-2 px-4 border-b">{u.Rol}</td>
                                     </tr>
                                 ))}
                             </tbody>

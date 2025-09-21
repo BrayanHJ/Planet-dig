@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
@@ -29,6 +30,15 @@ app.get("/api/usuarios", async (req, res) => {
     try {
         const [results] = await db.execute("SELECT * FROM usuarios");
         res.json({ success: true, usuarios: results });
+    } catch (err) {
+        res.json({ success: false, mensaje: "Error en el servidor" });
+    }
+});
+
+app.get("/api/Tareas", async (req, res) => {
+    try {
+        const [results] = await db.execute("SELECT * FROM tareas");
+        res.json({ success: true, Tareas: results });
     } catch (err) {
         res.json({ success: false, mensaje: "Error en el servidor" });
     }
