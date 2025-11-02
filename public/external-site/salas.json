@@ -1,0 +1,17 @@
+{
+  "salas": [
+    { "img": "assets/Salas/casa_de_la_tierra.webp", "texto": "Casa De la Tierra", "id": 12 },
+    { "img": "assets/Salas/planetario-digital.webp", "texto": "Domo Digital", "id": 13 },
+    { "img": "assets/Salas/Cosmonautica.webp", "texto": "Cosmonautica", "id": 1 },
+    { "img": "assets/Salas/Exo_Planetas.webp", "texto": "Exo Planetas", "id": 2 },
+    { "img": "assets/Salas/Mujeres_en_el_Espacio.webp", "texto": "Mejeres En el Espacio", "id": 3 },
+    { "img": "assets/Salas/Mas_Mujeres_en_el_Espacio.webp", "texto": "Mas Mujeres en el Espacio", "id": 4 },
+    { "img": "assets/Salas/Metioritos.webp", "texto": "Meteoritos", "id": 5 },
+    { "img": "assets/Salas/Talleres.webp", "texto": "Talleres", "id": 6 },
+    { "img": "assets/Salas/satelites_Naturales.webp", "texto": "Satelites Naturales", "id": 7 },
+    { "img": "assets/Salas/Mural_Espacio.webp", "texto": "Mural Espacial", "id": 8 },
+    { "img": "assets/Salas/Sistema_Solar.webp", "texto":  "Sistema Solar", "id": 9 },
+    { "img": "assets/Salas/Telescopios.webp", "texto": "Telescopios", "id": 10 },
+    { "img": "assets/Salas/Mural.webp", "texto": "Mural", "id": 11 }
+  ]
+}

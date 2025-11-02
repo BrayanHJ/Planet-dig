@@ -55,6 +55,19 @@ export const ControlWeb = () => {
         }
     ];
 
+//     const actualizarSalas = async (nuevasSalas) => {
+//   try {
+//     await fetch('/api/salas/actualizar', {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({ salas: nuevasSalas })
+//     });
+//     // El backend guardará esto en salas.json
+//   } catch (error) {
+//     console.error('Error al actualizar salas:', error);
+//   }
+// };
+
 return (
     <main>
         <h1 className="text-3xl font-bold text-center">
