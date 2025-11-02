@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLANETARIO CHIMALHUACAN</title>
+    <link rel="stylesheet" href="styles/Diseño.CSS">
+    <link rel="stylesheet" href="styles/Salas.CSS">
+    <link rel="stylesheet" href="styles/Ver_img.CSS">
+    <link rel="stylesheet" href="styles/Responsive.CSS">
+    <link rel="stylesheet" href="styles/Actividades.css">
+</head>
+
+<body>
+    <!-- |||||°°°°°_____Menu_____°°°°°||||| -->
+    <span class="None_Visible" id="Planetario-Digital-Chimalhuacan"></span>
+    <nav>
+        <ul>
+            <li>
+                <a href="#Eventos"><span>Eventos<br></span><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#ffffff"><path d="M730-450v-60h150v60H730Zm50 290-121-90 36-48 121 90-36 48Zm-82-503-36-48 118-89 36 48-118 89ZM210-200v-160h-70q-24.75 0-42.37-17.63Q80-395.25 80-420v-120q0-24.75 17.63-42.38Q115.25-600 140-600h180l200-120v480L320-360h-50v160h-60Zm250-146v-268l-124 74H140v120h196l124 74Zm100 0v-268q27 24 43.5 58.5T620-480q0 41-16.5 75.5T560-346ZM300-480Z"/></svg></a>
+            </li>
+            <li>
+                <a href="#Cartelera"><span>Cartelera<br></span><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#CCCCCC"><path d="M180-80q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-60h65v60h340v-60h65v60h65q24 0 42 18t18 42v620q0 24-18 42t-42 18H180Zm0-60h600v-430H180v430Zm0-490h600v-130H180v130Zm0 0v-130 130Z"/></svg></a>
+            </li>
+            <li>
+                <a href="#Ubicacion"><span>Ubicacion<br></span><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#CCCCCC"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm-43-61v-82q-35 0-59-26t-24-61v-44L149-559q-5 20-7 39.5t-2 39.5q0 130 84.5 227T437-141Zm294-108q44-48 66.5-107.5T820-480q0-106-58-192.5T607-799v18q0 35-24 61t-59 26h-87v87q0 17-13.5 28T393-568h-83v88h258q17 0 28 13t11 30v127h43q29 0 51 17t30 44Z"/></svg></a>
+            </li>
+            <li>
+                <a href="#Horarios"><span>Horarios<br></span><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#CCCCCC"><path d="m187-551 106 45q18-36 38.5-71t43.5-67l-79-16-109 109Zm154 81 133 133q57-26 107-59t81-64q81-81 119-166t41-192q-107 3-192 41T464-658q-31 31-64 81t-59 107Zm229-96q-20-20-20-49.5t20-49.5q20-20 49.5-20t49.5 20q20 20 20 49.5T669-566q-20 20-49.5 20T570-566Zm-15 383 109-109-16-79q-32 23-67 43.5T510-289l45 106Zm326-694q9 136-34 248T705-418l-2 2-2 2 22 110q3 15-1.5 29T706-250L535-78l-85-198-170-170-198-85 172-171q11-11 25-15.5t29-1.5l110 22q1-1 2-1.5t2-1.5q99-99 211-142.5T881-877ZM149-325q35-35 85.5-35.5T320-326q35 35 34.5 85.5T319-155q-26 26-80.5 43T75-80q15-109 31.5-164t42.5-81Zm42 43q-14 15-25 47t-19 82q50-8 82-19t47-25q19-17 19.5-42.5T278-284q-19-18-44.5-17.5T191-282Z"/></svg></a>
+            </li>
+            <li>
+                <a href="#Redes-Sociales"><span>Redes Sociales<br></span><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#CCCCCC"><path d="M0-240v-53q0-38.57 41.5-62.78Q83-380 150.38-380q12.16 0 23.39.5t22.23 2.15q-8 17.35-12 35.17-4 17.81-4 37.18v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-19.86-3.5-37.43T765-377.27q11-1.73 22.17-2.23 11.17-.5 22.83-.5 67.5 0 108.75 23.77T960-293v53H780Zm-480-60h360v-6q0-37-50.5-60.5T480-390q-79 0-129.5 23.5T300-305v5ZM149.57-410q-28.57 0-49.07-20.56Q80-451.13 80-480q0-29 20.56-49.5Q121.13-550 150-550q29 0 49.5 20.5t20.5 49.93q0 28.57-20.5 49.07T149.57-410Zm660 0q-28.57 0-49.07-20.56Q740-451.13 740-480q0-29 20.56-49.5Q781.13-550 810-550q29 0 49.5 20.5t20.5 49.93q0 28.57-20.5 49.07T809.57-410ZM480-480q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm.35-60Q506-540 523-557.35t17-43Q540-626 522.85-643t-42.5-17q-25.35 0-42.85 17.15t-17.5 42.5q0 25.35 17.35 42.85t43 17.5ZM480-300Zm0-300Z"/></svg></a>
+            </li>
+            <li>
+                <a href="#Planetario-Digital-Chimalhuacan"><img src="assets/icons/Logo_Planetario.webp" alt="Logo_Planetario"></a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- |||||°°°°°_____TILE_____°°°°°||||| --> 
+    
+    <div class="pantalla-estrellas">
+        <h1 class="titulo">Planetario Digital <br> Chimalhuacán</h1>
+        <canvas id="canvas-estrellas"></canvas>
+    </div>
+
+        <!-- |||||°°°°°_____Seccion_Actividades_____°°°°°||||| -->
+    <section class="Actividades_Seccion">
+        <div class="Actividades_Carrusel">
+            <button class="Actividades_Btn prev">&#60;</button>
+
+            <div class="actividad active" id="Eventos">
+                <div class="actividad-img-wrap">
+                    <img src="assets/Actividades/scuba-driven-1900x700.webp" alt="Actividad 1">
+                    <div class="actividad-info">
+                        <h2>Actividad 1</h2>
+                        <p>Descripción de la actividad 1. Fecha: 20/06/2025</p>
+                    </div>
+                </div>
+            </div>
+            <div class="actividad">
+                <div class="actividad-img-wrap">
+                    <img src="assets/Actividades/que-es-composing-cabecera.jpg" alt="Actividad 2">
+                    <div class="actividad-info">
+                        <h2>Actividad 2</h2>
+                        <p>Descripción de la actividad 2. Fecha: 21/06/2025</p>
+                    </div>
+                </div>
+            </div>
+            <div class="actividad">
+                <div class="actividad-img-wrap">
+                    <img src="assets/Actividades/scuba-driven-1900x700.webp" alt="Actividad 3">
+                    <div class="actividad-info">
+                        <h2>Actividad 3</h2>
+                        <p>Descripción de la actividad 3. Fecha: 22/06/2025</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="Actividades_Btn next">&#62;</button>
+        </div>
+    </section>
+
+    <!-- |||||°°°°°_____Div_2_____°°°°°||||| -->
+    
+    <div class="Seccion_2">
+        <div class="Contenedor_Blanco_IMG">
+            <img src="assets/image/planetario_digital.webp" alt="circle_planetario">
+        </div>
+        <div>
+            <p>
+                <samp style="font-size:1.15em; color:#38dee4; font-weight:bold; margin-top:18px;">
+                    El Planetario acerca la ciencia a la comunidad,<br>
+                    despierta la curiosidad y promueve el conocimiento.<br> 
+                </samp>
+                ¡Vive experiencias únicas, aprende y déjate sorprender<br>
+                por el universo en un espacio pensado para ti!
+            </p>
+        </div>
+    </div>
+
+        <!-- |||||°°°°°_____Div_1_____°°°°°||||| -->
+
+    <div class="Seccion_1">
+        <img src="assets/image/domo_digital.webp" style="max-width:100%;">
+    <span class="None_Visible" id="Inicio"></span>
+    </div>
+
+    <br><br><br>
+
+    <!-- |||||°°°°°_____Funciones_____°°°°°||||| -->
+
+    <h1 class="Funciones_Tile SUB-TILE_IMPORTANTE" id="Cartelera">Funciones</h1>
+
+    <p class="informacion_Funciones" style="color:#38dee4; font-weight:bold; margin-bottom:12px;">
+        ¡Explora nuestra cartelera y vive la magia del universo cada día en el Planetario! <br>
+        <span style="color:#ffffff; font-weight:normal;">Consulta las funciones disponibles y no te pierdas ninguna experiencia.</span>
+    </p>
+
+    <div class="Funciones_Horario">
+        <button id="btn-prev" class="Btn_Funciones"> &lt; </button>
+        <div class="Contenedor_Funciones">
+            <div class="dia" data-dia="Lunes"><img src="assets/Horario_Funciones/no_hay_funcion.webp" alt="Lunes"></div>
+            <div class="dia" data-dia="Martes"><img src="assets/Horario_Funciones/si_hay_funcion.webp" alt="Martes"></div>
+            <div class="dia" data-dia="Miércoles"><img src="assets/Horario_Funciones/si_hay_funcion.webp" alt="Miércoles"></div>
+            <div class="dia" data-dia="Jueves"><img src="assets/Horario_Funciones/si_hay_funcion.webp" alt="Jueves"></div>
+            <div class="dia" data-dia="Viernes"><img src="assets/Horario_Funciones/si_hay_funcion.webp" alt="Viernes"></div>
+            <div class="dia" data-dia="Sábado"><img src="assets/Horario_Funciones/si_hay_funcion.webp" alt="Sábado"></div>
+            <div class="dia" data-dia="Domingo"><img src="assets/Horario_Funciones/si_hay_funcion.webp" alt="Domingo"></div>
+        </div>
+        <button id="btn-next" class="Btn_Funciones"> &gt; </button>
+    </div>
+
+    <p id="nombre-dia"></p>
+
+    <br><br><br><br>
+
+    <!-- |||||°°°°°_____Div_3_____°°°°°||||| -->
+    
+    <h1 class="Sub_Tile_Salas SUB-TILE_IMPORTANTE">Salas <br> Disponibles</h1>
+
+    <div class="Seccion_3">
+
+        <button id="prev" class="Button_SALAS">&lt;</button>
+        <div class="Contenedor_Salas" id="carrusel">
+            <!-- Solo 5 salas visibles -->
+            <div class="sala muy-izquierda"><img src="" alt=""><p></p></div>
+            <div class="sala izquierda"><img src="" alt=""><p></p></div>
+            <div class="sala central"><img src="" alt=""><p></p></div>
+            <div class="sala derecha"><img src="" alt=""><p></p></div>
+            <div class="sala muy-derecha"><img src="" alt=""><p></p></div>
+        </div>
+        <button id="next" class="Button_SALAS">&gt;</button>
+
+    </div>
+
+    <br><br><br>
+
+    <!-- |||||°°°°°_____Div_4_____°°°°°||||| -->
+    <h1 class="Tile_Ubicacion SUB-TILE_IMPORTANTE" id="Ubicacion">Ubicación</h1>
+
+    <div class="Seccion_4">
+        <div class="Mapa_Contenedor">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2989.9563204050514!2d-98.96289465066394!3d19.408885127408638!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1e3a5978ca325%3A0x519024480f5b9f39!2sPlanetario%20Digital%20de%20Chimalhuac%C3%A1n!5e0!3m2!1ses!2smx!4v1745367109904!5m2!1ses!2smx" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="Ubiacion_DIV" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <p style="font-size: 100pxem; font-weight: bold; margin-bottom: 10px;">
+                ¡Ven y vive una experiencia única en el <br><span style="color:#38dee4;">Planetario Digital Chimalhuacán</span>!<br>
+                Descubre el universo en un lugar accesible y fascinante para toda la familia.
+            </p>
+            <button>
+                <a href="https://maps.app.goo.gl/6jReRpM7GfJSuXFJ8" style="color: #fff; text-decoration: none;">¿Cómo llegar?</a>
+            </button>
+            <p style="margin-top: 12px; color: #918e8e;">¡Te esperamos para explorar el cosmos juntos!</p>
+        </div>
+    </div>  
+
+    <br><br><br>
+
+    <!-- |||||°°°°°_____Div_5_____°°°°°||||| -->
+
+    <h1 class="Costo_Entrada SUB-TILE_IMPORTANTE">Precio de <br> Entrada</h1>
+
+    <div class="Seccion_5">
+        <div class="Contenedor_Paquetes">
+            <div class="Paquete_Personas">
+                <p class="propiedad_Paquete">Individuales</p>
+                <div class="caja_propiedades">
+                    <div>
+                        <h1 class="Shadow-color">Acceso General</h1>
+                        <div class="Bloque_Precio"><h1>$40</h1></div>
+                        <p>
+                            <strong>¡Disfruta la experiencia completa!</strong><br>
+                            <span>Incluye acceso para <b>1 persona</b> a todas las áreas del planetario.</span>
+                        </p>
+                    </div>
+                    <div>
+                        <h1 class="Shadow-color">Acceso Niños</h1>
+                        <div class="Bloque_Precio"><h1>$20</h1></div>
+                        <p>
+                            <strong>¡Ideal para los pequeños exploradores!</strong><br>
+                            <span>Incluye acceso para <b>1 niño</b> (menor de 12 años) a todas las áreas.</span>
+                        </p>
+                    </div>
+                    <div>
+                        <h1 class="Shadow-color">Acceso Adultos Mayores</h1>
+                        <div class="Bloque_Precio"><h1>$20</h1></div>
+                        <p>
+                            <strong>¡Ciencia para todas las edades!</strong><br>
+                            <span>Incluye acceso para <b>1 adulto mayor</b> (con credencial INAPAM).</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="Paquete_Pack">
+                <p class="propiedad_Paquete">Paquetes</p>
+                <div class="caja_propiedades">
+                    <div>
+                        <h1 class="Shadow-color">Acceso Familiar</h1>
+                        <div class="Bloque_Precio"><h1>$100</h1></div>
+                        <p>
+                            <strong>¡Ven con tu familia y ahorra!</strong><br>
+                            <span>Incluye <b>2 boletos individuales</b> + <b>2 boletos para niños</b>.<br>
+                            Perfecto para familias que quieren vivir la experiencia juntos.</span>
+                        </p>
+                    </div>
+                    <div>
+                        <h1 class="Shadow-color">Acceso Escolar</h1>
+                        <div class="Bloque_Precio"><h1>$150</h1></div>
+                        <p>
+                            <strong>¡Ideal para grupos escolares!</strong><br>
+                            <span>Incluye acceso para <b>15 niños</b>.<br>
+                            Una oportunidad única para aprender y divertirse en grupo.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br><br>
+
+    <!-- |||||°°°°°_____Horarios____°°°°°||||| -->
+
+    <h1 class="Tile_horarios SUB-TILE_IMPORTANTE" id="Horarios">Horarios</h1>
+
+    <div class="Dias_Disponibles">
+        <p>¡ planea tu visita ! <br> en el Increible <br>
+            <span style="color:#38dee4; "> <strong>Planetario Digital <br>
+            Chimalhuacán <br> </strong> </span>
+        </p>
+        <div class="imagen_Horarios">
+            <img src="assets/Horarios_Planetario/Horarios.png" alt="Dias_Horarios" class="img-preview">
+        </div>
+
+        <!-- Overlay fullscreen con video -->
+        <div class="overlay" id="imgOverlay">
+            <span class="close-btn" id="closeBtn">&times;</span>
+            <img src="assets/Horarios_Planetario/Horarios.png" alt="Vista previa" />
+        </div>
+    </div>
+
+    <br><br><br>
+    
+    <!-- |||||°°°°°_____Div_6_____°°°°°||||| -->
+    
+    <p class="Tile_RedsSoc SUB-TILE_IMPORTANTE" id="Redes-Sociales">Redes <br> Sociales</p>
+    <div class="Seccion_6">
+        <div>
+            <a href="https://www.facebook.com/Planetario.chimalhuacan.2022/?locale=es_LA">
+                <img src="assets/icons/Facebook_icon.webp" alt="Facebook">
+            </a>
+            <p class="Span-Text">Facebook</p>
+        </div>
+        <div>
+            <a href="https://www.instagram.com/planetario_chimalhuacan?igsh=OTA4c3FvMWo0Y2Zp">
+                <img src="assets/icons/Instagram_icon.webp" alt="Instagram">
+            </a>
+            <p class="Span-Text">Instagram</p>
+        </div>
+        <div>
+            <a href="https://www.tiktok.com/@planetariochimalhuacan24?_t=ZS-8wxxuZsk0KV&_r=1">
+                <img src="assets/icons/tikctoc.webp" alt="TikTok">
+            </a>
+            <p class="Span-Text">TikTok</p>
+        </div>
+    </div>
+
+    <!-- |||||°°°°°_____Pie De Paguina_____°°°°°||||| -->
+
+    <footer>
+        <p class="Footer_Tile"> Planetario Digital Chimalhuacan </p>
+        <div class="Contenido margin_Space">
+            <div class="Contenido">
+                <div class="Aling-Izquierda">
+                    <div>
+                        <h3>Facebook</h3>
+                        <a href="https://www.facebook.com/Planetario.chimalhuacan.2022/?locale=es_LA">
+                            <img src="assets/icons/Facebook_icon.webp" alt="Facebook" class="Facebook_Img_Link">
+                        </a>
+                        <p> Planetario Digital <br>
+                            Chimalhuacán 2022-2024
+                        </p>
+                    </div>
+                    <div>
+                        <h3>Direccion</h3>
+                        <a href="https://maps.app.goo.gl/6jReRpM7GfJSuXFJ8">
+                            <img src="assets/icons/Ubicacion.webp" alt="Ubicacion" class="IMG_ubicacion">
+                        </a>
+                        <p>
+                            Manzana 030, <br> 
+                            56350 Xochiaca <br>
+                            Parte Alta, Méx.
+                        </p>
+                    </div>
+            </div>
+            <div class="Informacion_panetario">
+                <div>
+                    <img src="assets/icons/Logo_Planetario.webp" alt="Logo_Planetario">
+                    <img src="assets/icons/h.ayuntamiento.webp" alt="Logo_H.ayuntamiento_Chimalhuacan">
+                </div>
+            </div>
+        </div>
+    </footer>
+    <p class="creditos">Creado por Brayan Hernández Jiménez</p>
+
+    <!-- Scripts -->
+    <script src="Scripts/Actividades.js"></script>
+    <script src="Scripts/Carrusel_Salas.js"></script>
+    <script src="Scripts/Carrusel_Funciones.JS"></script>
+    <script src="Scripts/TILE.JS"></script>
+    <script src="Scripts/Sala_Detalles.js"></script>
+    <script src="Scripts/Funciones_DETALLES.js"></script>
+    <script src="Scripts/Mostrar_img.JS"></script>
+</body>
+</html>

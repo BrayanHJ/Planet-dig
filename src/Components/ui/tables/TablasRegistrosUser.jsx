@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { Icon } from '@iconify/react';
 import DataTable from 'datatables.net-react';

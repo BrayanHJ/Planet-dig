@@ -1,0 +1,52 @@
+.img-preview {
+    cursor: pointer;
+    width: 300px;
+    transition: transform 0.3s ease;
+    border-radius: 10px;
+}
+
+.img-preview:hover {
+    transform: scale(1.05);
+}
+
+  /* Overlay con fondo de video */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    background-color: rgba(0, 0, 0, 0.788) ;
+}
+
+.overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+
+.overlay img {
+    max-width: 80vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 10px 20px 20px rgb(255, 255, 255);
+    z-index: 1;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 3rem;
+    cursor: pointer;
+    z-index: 2;
+}

@@ -1,0 +1,160 @@
+.Sub_Tile_Salas {
+    text-align: center;
+    color: white;
+    margin-top: 30px;
+}
+
+.Seccion_3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px auto;
+    gap: 20px;
+    max-width: 100%;
+}
+
+.Contenedor_Salas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 90vw;
+    overflow: hidden;
+    transition: transform 0.9s ease;
+}
+
+.sala {
+    text-align: center;
+    transition: all 0.5s ease;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.sala img {
+    width: 100%;
+    height: auto;
+    max-width: 480px;
+    border-radius: 20px;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    box-shadow: 20px 15px 50px rgba(0, 0, 0, 0.904);
+}
+
+.sala p {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+    margin-top: 30px;
+    color: white;
+}
+
+.sala.muy-izquierda,
+.sala.muy-derecha {
+    opacity: 0;
+    transform: scale(0.1);
+    width: 0;
+    overflow: hidden;
+}
+
+.sala.izquierda,
+.sala.derecha {
+    opacity: 0.5;
+    transform: scale(0.6);
+}
+
+.sala.central {
+    opacity: 1;
+    transform: scale(1.0);
+}
+
+button {
+    font-size: 40px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button:focus {
+    outline: none;
+    color: #ffee00;
+    transform: scale(1.3);
+    background-color: #141a72b2;
+}
+
+/* Media query para pantallas menores a 768px */
+@media (max-width: 768px) {
+    .Seccion_3 {
+        flex-direction: row;
+        gap: 30px;
+        margin: 20px auto;
+    }
+
+    div.Seccion_3 button {
+    font-size: 30px;
+    padding: 8px 6px;
+}
+
+    .sala.central img {
+        max-width: 90vw;
+    }
+
+    .sala.izquierda img,
+    .sala.derecha img {
+        max-width: 35vw;
+    }
+
+    .sala.izquierda,
+    .sala.derecha {
+        transform: scale(0.5);
+        opacity: 0.4;
+        display: none;
+    }
+
+    .Sub_Tile_Salas {
+        font-size: 22px;
+        margin-top: 20px;
+    }
+
+    .sala p {
+        font-size: 20px;
+        margin-top: 20px;
+    }
+
+    .Contenedor_Salas {
+        gap: 0px;
+        max-width: 50vw;
+    }
+
+    .Contenedor_Salas {
+    transition: transform 0.9s ease;
+    position: relative;
+}
+    /* Funcion mostrar Sala */
+    .Contenedor_Salas.expandida {
+        transform: scale(2.0);
+        z-index: 1000;
+    }
+
+    /* Oculta los botones cuando está expandido */
+    .Contenedor_Salas.expandida button {
+        display: none;
+    }
+
+    .sala {
+        scroll-snap-align: center;
+    }
+}
+
+/* Funcion para Expandir Salas */
+
+    .Contenedor_Salas.expandida {
+        transform: scale(2.0);
+        z-index: 1000;
+    }
+
+    /* Oculta los botones cuando está expandido */
+    .Contenedor_Salas.expandida button {
+        display: none;
+    }

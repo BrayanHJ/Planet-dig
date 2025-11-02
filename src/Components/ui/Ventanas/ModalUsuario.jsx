@@ -11,7 +11,7 @@ return (
     <AnimatePresence>
         <motion.div
             key="modal-backdrop"
-            className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-sm text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -26,26 +26,46 @@ return (
                     exit={{ y: -50, opacity: 0 }}
                     transition={{ type: "spring", duration: 0.5 }}
                 >
-                    <h1 className="font-semibold text-5xl">Cerrar Sesión</h1>
+                    <section className="font-semibold text-5xl text-center flex-col flex justify-center items-center mt-4">
+                        <h1 className="">Cerrar Sesión</h1>
+                        <motion.span
+                        initial={{ opacity: 0, scale: 0.5, y: -300 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }} 
+                        transition={{ duration: 2.5 }}
+                        >
+                            <Icon icon="quill:userhappy" className="text-yellow-500  align-center flex justify-center " />
+                        </motion.span>
+                    </section>
                     <br />
-                    <p className="mt-4">¿Estás seguro de que deseas cerrar sesión, {user}?</p>
-                    <div className="mt-6 flex justify-end gap-4">
-                        <button
+                    <p className="mt-4 text-2xl">¿Estás seguro de que deseas cerrar sesión {user}?</p>
+                    <br />
+                    <div className="mt-6 mb-4 flex justify-center-safe gap-4">
+                        <motion.button
                             className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition"
                             onClick={onClose}
+                            whileHover={{ scale: 1.2 }}
+                            initial={{ scale: 1 , x:-500 }}
+                            animate={{ scale: 1 , x:0 }}
+                            transition={{ duration: 1.5 , ease: "easeInOut" }}
+
                         >
                             Cancelar
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
                             className="px-4 py-2 bg-red-500 dark:bg-red-600 text-white rounded-lg hover:bg-red-600 dark:hover:bg-red-500 transition"
                             onClick={() => {
                                 UserStore.getState().reset();
                                 onClose();
                                 navigate('/');
                             }}
+                            whileHover={{ scale: 1.2 }}
+                            initial={{ scale: 1 , x:500 }}
+                            animate={{ scale: 1 , x:0 }}
+                            transition={{ duration: 1.0 , ease: "easeInOut" }}
+
                         >
                             Cerrar Sesión
-                        </button>
+                        </motion.button>
                     </div>
                 </motion.div>
             </div>
