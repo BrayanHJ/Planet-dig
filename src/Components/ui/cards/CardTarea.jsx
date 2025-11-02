@@ -5,12 +5,14 @@ import { Icon } from "@iconify-icon/react/dist/iconify.js";
 import {Modal} from "../../ui/utils/Modal.jsx";
 import { ModalEstadoTarea } from "../../ui/utils/EstadoTarea.jsx";
 
+import { AnimatePresence , motion } from "framer-motion";
+
 export const CardTarea = () => {
     const { tareas, cargarTareas, loading, error } = useTareasStore();
     useEffect(() => {
         cargarTareas();
     }, [cargarTareas]);
-
+    
 
     const { stateModal, setStateModal , setAccion, setItemSelect , setEstadoTarea , EstadoTarea  } = useTareasStore();
 
@@ -65,8 +67,10 @@ export const CardTarea = () => {
                     </div>
                 </main>
             ))}
+            <AnimatePresence>
             {stateModal && <Modal />}
             {EstadoTarea && <ModalEstadoTarea />}
+            </AnimatePresence>
         </div>
     );
 }

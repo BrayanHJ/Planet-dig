@@ -2,5 +2,52 @@
 @custom-variant dark (&:where(.dark , .dark *));
 @theme{
   --color-primary: #1d4ed8;
-  --color-bg-dark: #1e293b;
+  --color-bg-dark: #100E0E;
 }
+
+/* global.css o en línea */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #3e41ee8c; /* Tailwind's violet-500 */
+  border-radius: 9999px;
+
+  background-color: #0f0cb48c; 
+}
+
+@layer utilities {
+  .text-shadow-outline {
+    text-shadow:
+      2px 2px 0 #000,
+      -2px 2px 0 #000,
+      2px -2px 0 #000,
+      -2px -2px 0 #000,
+      0px 2px 0 #000,
+      0px -2px 0 #000,
+      2px 0px 0 #000,
+      -2px 0px 0 #000;
+  }
+}
+
+@layer utilities {
+  .text-white-outline {
+    text-shadow:
+      1px 1px 0 #ffffff,
+      -1px 1px 0 #ffffff,
+      1px -1px 0 #ffffff,
+      -1px -1px 0 #ffffff,
+      0px 1px 0 #ffffff,
+      0px -1px 0 #ffffff,
+      1px 0px 0 #ffffff,
+      -1px 0px 0 #ffffff;
+  }
+}
+

@@ -10,10 +10,7 @@ export const MainLayouts = () => {
                 <section className="flex-1 px-4 h-full overflow-auto justify-center">
                     <Outlet/>
                 </section>
-
             </section>
-
-
         </main>
     );
 }

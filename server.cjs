@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
@@ -7,43 +6,32 @@ app.use(cors());
 app.use(express.json());
 
 // Modular DB y Auth
-const db = require("./db.cjs");
-const { autenticarUsuario } = require("./auth.cjs");
+const db = require("./backend/db.cjs");
+const { autenticarUsuario } = require("./backend/auth.cjs");
 
-// API Login usando función modular
-app.post("/api/login", async (req, res) => {
-    const { usuario, contrasena } = req.body;
-    try {
-        const result = await autenticarUsuario(usuario, contrasena);
-        if (result.success) {
-            res.json({ success: true, mensaje: `¡Login correcto, ${usuario}!` });
-        } else {
-            res.json({ success: false, mensaje: "Credenciales incorrectas" });
-        }
-    } catch (err) {
-        res.json({ success: false, mensaje: "Error en el servidor" });
-    }
-});
+// Modular routers
+const usuariosRouter = require('./backend/Usuarios.cjs');
+const tablasRouter = require('./backend/Tablas.cjs');
+const ventaRouter = require('./backend/Venta_Boletos.cjs');
+const inicioRouter = require('./backend/Inicio.cjs');
 
 
-app.get("/api/usuarios", async (req, res) => {
-    try {
-        const [results] = await db.execute("SELECT * FROM usuarios");
-        res.json({ success: true, usuarios: results });
-    } catch (err) {
-        res.json({ success: false, mensaje: "Error en el servidor" });
-    }
-});
+// routers
 
-app.get("/api/Tareas", async (req, res) => {
-    try {
-        const [results] = await db.execute("SELECT * FROM tareas");
-        res.json({ success: true, Tareas: results });
-    } catch (err) {
-        res.json({ success: false, mensaje: "Error en el servidor" });
-    }
-});
+// Funciones de tablas para Usuarios
+app.use('/api/usuarios', usuariosRouter);
 
-app.listen(3000, () => {
-    console.log("Servidor escuchando en el puerto 3000");
+// Funciones de tablas Tablas
+app.use('/api', tablasRouter);
+
+// Funciones de tablas para Inicios de Secion
+app.use('/api', inicioRouter);
+
+// ventas (placeholder)
+app.use('/api/venta', ventaRouter);
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
