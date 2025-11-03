@@ -14,6 +14,7 @@ const usuariosRouter = require('./backend/Usuarios.cjs');
 const tablasRouter = require('./backend/Tablas.cjs');
 const ventaRouter = require('./backend/Venta_Boletos.cjs');
 const inicioRouter = require('./backend/Inicio.cjs');
+const carruselRouter = require('./backend/Carrusel.cjs');
 
 
 // routers
@@ -29,6 +30,9 @@ app.use('/api', inicioRouter);
 
 // ventas (placeholder)
 app.use('/api/venta', ventaRouter);
+
+// Carrusel público
+app.use('/api/carrusel', carruselRouter);
 
 // Start server
 const PORT = process.env.PORT || 3000;

@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MainLayouts } from './../layouts/MainLayouts.jsx'
 import { HomePage } from './../pages/HomePage.jsx'
@@ -18,6 +19,7 @@ export function MyRouter() {
 
                 <Route index element={<Inicio />} />
                 <Route path="/" element={<Inicio />} />
+                <Route path="/PlanetarioDigital" element={<Navigate to="/external-site/Pagina-Web/index.html" replace />}/>
                 <Route path="/Panel" element={<MainLayouts />}>
                     <Route index element={<HomePage />} />
                     <Route path="VentaBoletos" element={<VentaBoletos />} />

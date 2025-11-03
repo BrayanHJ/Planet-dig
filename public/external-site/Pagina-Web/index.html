@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PLANETARIO CHIMALHUACAN</title>
-</head>
+    </head>
 <style>
         /*|||||°°°°°_____ Recursos _____°°°°°|||||*/
 
@@ -377,17 +377,17 @@
         z-index: 1;
     }
 
-    .Funciones_Horario button {
+    .Btn_Funciones button {
         font-size: 80px;
         background-color: transparent;
-        color: #ffffff;
+        background-color: #141a72b2;
         border: none;
         cursor: pointer;
         transition: 0.3s;
         margin: 40px;
     }
 
-    .Funciones_Horario button:hover {
+    .Btn_Funciones button:hover {
         color: #ffee00;
         transform: scale(1.3);
         background-color: #141a72b2;
@@ -1790,7 +1790,7 @@ button:focus {
                 <a href="#Redes-Sociales"><span>Redes Sociales<br></span><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#CCCCCC"><path d="M0-240v-53q0-38.57 41.5-62.78Q83-380 150.38-380q12.16 0 23.39.5t22.23 2.15q-8 17.35-12 35.17-4 17.81-4 37.18v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-19.86-3.5-37.43T765-377.27q11-1.73 22.17-2.23 11.17-.5 22.83-.5 67.5 0 108.75 23.77T960-293v53H780Zm-480-60h360v-6q0-37-50.5-60.5T480-390q-79 0-129.5 23.5T300-305v5ZM149.57-410q-28.57 0-49.07-20.56Q80-451.13 80-480q0-29 20.56-49.5Q121.13-550 150-550q29 0 49.5 20.5t20.5 49.93q0 28.57-20.5 49.07T149.57-410Zm660 0q-28.57 0-49.07-20.56Q740-451.13 740-480q0-29 20.56-49.5Q781.13-550 810-550q29 0 49.5 20.5t20.5 49.93q0 28.57-20.5 49.07T809.57-410ZM480-480q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm.35-60Q506-540 523-557.35t17-43Q540-626 522.85-643t-42.5-17q-25.35 0-42.85 17.15t-17.5 42.5q0 25.35 17.35 42.85t43 17.5ZM480-300Zm0-300Z"/></svg></a>
             </li>
             <li>
-                <a href="#Planetario-Digital-Chimalhuacan"><img src="assets/icons/Logo_Planetario.webp" alt="Logo_Planetario"></a>
+                <a href="#Planetario-Digital-Chimalhuacan"><img src="assets/icons/logo_planetario.png" alt="Logo_Planetario"></a>
             </li>
         </ul>
     </nav>
@@ -1874,22 +1874,21 @@ button:focus {
         ¡Explora nuestra cartelera y vive la magia del universo cada día en el Planetario! <br>
         <span style="color:#ffffff; font-weight:normal;">Consulta las funciones disponibles y no te pierdas ninguna experiencia.</span>
     </p>
-
-    <div class="Funciones_Horario">
-        <button id="btn-prev" class="Btn_Funciones"> &lt; </button>
-        <div class="Contenedor_Funciones">
-            <div class="dia" data-dia="Lunes"><img src="assets/Horario_Funciones/no_hay_funcion.webp" alt="Lunes"></div>
-            <div class="dia" data-dia="Martes"><img src="assets/Horario_Funciones/si_hay_funcion.webp" alt="Martes"></div>
-            <div class="dia" data-dia="Miércoles"><img src="assets/Horario_Funciones/si_hay_funcion.webp" alt="Miércoles"></div>
-            <div class="dia" data-dia="Jueves"><img src="assets/Horario_Funciones/si_hay_funcion.webp" alt="Jueves"></div>
-            <div class="dia" data-dia="Viernes"><img src="assets/Horario_Funciones/si_hay_funcion.webp" alt="Viernes"></div>
-            <div class="dia" data-dia="Sábado"><img src="assets/Horario_Funciones/si_hay_funcion.webp" alt="Sábado"></div>
-            <div class="dia" data-dia="Domingo"><img src="assets/Horario_Funciones/si_hay_funcion.webp" alt="Domingo"></div>
+    <!-- Carrusel de funciones -->
+    <div class="Seccion_Funciones">
+        <button id="prev-funcion" class="Btn_Funciones">&lt;</button>
+        <div class="Contenedor_Funciones" id="carrusel-funciones">
+            <!-- Solo 5 días visibles -->
+            <div class="funcion muy-izquierda"><img src="" alt=""></div>
+            <div class="funcion izquierda"><img src="" alt=""></div>
+            <div class="funcion central"><img src="" alt=""></div>
+            <div class="funcion derecha"><img src="" alt=""></div>
+            <div class="funcion muy-derecha"><img src="" alt=""></div>
         </div>
-        <button id="btn-next" class="Btn_Funciones"> &gt; </button>
+        <button id="next-funcion" class="Btn_Funciones">&gt;</button>
     </div>
 
-    <p id="nombre-dia"></p>
+    <p id="nombre-funcion" class="text-center mt-4"></p>
 
     <br><br><br><br>
 
@@ -2026,19 +2025,19 @@ button:focus {
     <div class="Seccion_6">
         <div>
             <a href="https://www.facebook.com/Planetario.chimalhuacan.2022/?locale=es_LA">
-                <img src="assets/icons/Facebook_icon.webp" alt="Facebook">
+                <img src="assets/icons/facebook_icon.png" alt="Facebook">
             </a>
             <p class="Span-Text">Facebook</p>
         </div>
         <div>
             <a href="https://www.instagram.com/planetario_chimalhuacan?igsh=OTA4c3FvMWo0Y2Zp">
-                <img src="assets/icons/Instagram_icon.webp" alt="Instagram">
+                <img src="assets/icons/instagram_icon.png" alt="Instagram">
             </a>
             <p class="Span-Text">Instagram</p>
         </div>
         <div>
             <a href="https://www.tiktok.com/@planetariochimalhuacan24?_t=ZS-8wxxuZsk0KV&_r=1">
-                <img src="assets/icons/tikctoc.webp" alt="TikTok">
+                <img src="assets/icons/tikctoc.png" alt="TikTok">
             </a>
             <p class="Span-Text">TikTok</p>
         </div>
@@ -2054,7 +2053,7 @@ button:focus {
                     <div>
                         <h3>Facebook</h3>
                         <a href="https://www.facebook.com/Planetario.chimalhuacan.2022/?locale=es_LA">
-                            <img src="assets/icons/Facebook_icon.webp" alt="Facebook" class="Facebook_Img_Link">
+                            <img src="assets/icons/facebook_icon.png" alt="Facebook" class="Facebook_Img_Link">
                         </a>
                         <p> Planetario Digital <br>
                             Chimalhuacán 2022-2024
@@ -2063,7 +2062,7 @@ button:focus {
                     <div>
                         <h3>Direccion</h3>
                         <a href="https://maps.app.goo.gl/6jReRpM7GfJSuXFJ8">
-                            <img src="assets/icons/Ubicacion.webp" alt="Ubicacion" class="IMG_ubicacion">
+                            <img src="assets/icons/ubicacion.png" alt="Ubicacion" class="IMG_ubicacion">
                         </a>
                         <p>
                             Manzana 030, <br> 
@@ -2074,8 +2073,8 @@ button:focus {
             </div>
             <div class="Informacion_panetario">
                 <div>
-                    <img src="assets/icons/Logo_Planetario.webp" alt="Logo_Planetario">
-                    <img src="assets/icons/h.ayuntamiento.webp" alt="Logo_H.ayuntamiento_Chimalhuacan">
+                    <img src="assets/icons/logo_planetario.png"  alt="Logo_Planetario">
+                    <img src="assets/icons/h.ayuntamiento.png" alt="Logo_H.ayuntamiento_Chimalhuacan">
                 </div>
             </div>
         </div>

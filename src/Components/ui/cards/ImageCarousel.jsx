@@ -7,7 +7,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-export const ImageCarousel = ({ title, images }) => {
+export const ImageCarousel = ({ title, images, onEdit }) => {
 const pagination = {
     clickable: true,
     renderBullet: (index, className) => {
@@ -62,8 +62,11 @@ return (
                 onClick={() => window.open(img.src, '_blank')}
                 />
                 <p className="mt-2 text-white text-center">{img.description}</p>
-                <button className="mt-3 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl text-white transition-all">
-                Opciones
+                <button 
+                    onClick={() => onEdit(index)}
+                    className="mt-3 bg-blue-700 hover:bg-blue-500 hover:scale-125 px-4 py-2 rounded-xl text-white transition-all cursor-pointer"
+                >
+                    Editar
                 </button>
             </div>
         </SwiperSlide>

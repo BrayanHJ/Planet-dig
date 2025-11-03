@@ -1,0 +1,46 @@
+{
+  "dias": [
+    {
+      "img": "assets/Horario_Funciones/no_hay_funcion.webp",
+      "texto": "Lunes",
+      "estado": "no_hay_funcion",
+      "id": 1
+    },
+    {
+      "img": "assets/Horario_Funciones/si_hay_funcion.webp",
+      "texto": "Martes",
+      "estado": "si_hay_funcion",
+      "id": 2
+    },
+    {
+      "img": "assets/Horario_Funciones/si_hay_funcion.webp",
+      "texto": "Miércoles",
+      "estado": "si_hay_funcion",
+      "id": 3
+    },
+    {
+      "img": "assets/Horario_Funciones/si_hay_funcion.webp",
+      "texto": "Jueves",
+      "estado": "si_hay_funcion",
+      "id": 4
+    },
+    {
+      "img": "assets/Horario_Funciones/si_hay_funcion.webp",
+      "texto": "Viernes",
+      "estado": "si_hay_funcion",
+      "id": 5
+    },
+    {
+      "img": "assets/Horario_Funciones/si_hay_funcion.webp",
+      "texto": "Sábado",
+      "estado": "si_hay_funcion",
+      "id": 6
+    },
+    {
+      "img": "assets/Horario_Funciones/si_hay_funcion.webp",
+      "texto": "Domingo",
+      "estado": "si_hay_funcion",
+      "id": 7
+    }
+  ]
+}

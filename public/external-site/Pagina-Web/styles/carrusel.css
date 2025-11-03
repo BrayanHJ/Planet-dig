@@ -1,0 +1,89 @@
+/* Estilos compartidos para carruseles */
+.Seccion_Funciones, .Seccion_3 {
+    position: relative;
+    width: 100%;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Contenedor_Funciones, .Contenedor_Salas {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    overflow: hidden;
+    transition: transform 0.9s ease;
+}
+
+/* Estilos para las funciones (alineados con el diseño de salas) */
+.funcion {
+    position: relative;
+    width: 1200px;
+    max-width: 480px;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 0.8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 20px;
+    padding: 10px;
+    flex-shrink: 0;
+    box-shadow: 20px 15px 50px rgba(0, 0, 0, 0.9);
+}
+
+.funcion img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.funcion p {
+    margin-top: 12px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Posiciones para funciones: usamos escala/opacity para que encaje en el flex container */
+.funcion.muy-izquierda,
+.funcion.muy-derecha {
+    opacity: 0;
+    transform: scale(0.3);
+    pointer-events: none;
+    width: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.funcion.izquierda,
+.funcion.derecha {
+    opacity: 0.5;
+    transform: scale(0.75);
+}
+
+.funcion.central {
+    opacity: 1;
+    transform: scale(1.05);
+}
+/* Texto del día seleccionado */
+#nombre-funcion {
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.text-success {
+    color: #38dee4;
+}
+
+.text-danger {
+    color: #ff4444;
+}
