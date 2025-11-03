@@ -20,6 +20,8 @@ const pagination = {
             hover:bg-blue-500 
             transition-all
             select-none
+            mr-2
+            ml-2
         ">
             ${index + 1}
         </span>`;
@@ -56,11 +58,12 @@ return (
                 <img
                 src={img.src}
                 alt={img.alt}
-                className="w-full h-60 object-cover rounded-md"
+                className="w-full h-60 object-cover rounded-md cursor-pointer hover:scale-105 transition-transform"
+                onClick={() => window.open(img.src, '_blank')}
                 />
                 <p className="mt-2 text-white text-center">{img.description}</p>
                 <button className="mt-3 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl text-white transition-all">
-                Editar Imagen
+                Opciones
                 </button>
             </div>
         </SwiperSlide>
