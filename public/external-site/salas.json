@@ -1,14 +1,10 @@
 {
   "salas": [
     {
-      "img": "assets/Salas/casa_de_la_tierra.webp",
-      "texto": "Casa De la Tierra", 
-      "id": 12
-    },
-    {
-      "img": "assets/Salas/planetario-digital.webp",
-      "texto": "Domo Digital",
-      "id": 13
+      "img": "assets/Salas/1762275865502_Captura de pantalla 2024-10-12 164520.png",
+      "texto": "Domo Digital 34",
+      "id": 13,
+      "previewUrl": "blob:http://localhost:5173/a159fcec-36ec-4716-b717-5bee1c2c6256"
     },
     {
       "img": "assets/Salas/cosmonautica.webp",
@@ -34,11 +30,6 @@
       "img": "assets/Salas/metioritos.webp",
       "texto": "Meteoritos",
       "id": 5
-    },
-    {
-      "img": "assets/Salas/talleres.webp",
-      "texto": "Talleres",
-      "id": 6
     },
     {
       "img": "assets/Salas/satelites_naturales.webp",

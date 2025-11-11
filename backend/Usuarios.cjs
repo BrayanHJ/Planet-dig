@@ -77,6 +77,22 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// Eliminar Registro Usuario por ID
+router.delete('/registro/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [result] = await db.execute('DELETE FROM registro_usuarios WHERE id_registro = ?', [id]);
+        if (result.affectedRows > 0) {
+        res.json({ success: true, mensaje: 'Registro eliminado correctamente' });
+        } else {
+        res.status(404).json({ success: false, mensaje: 'No se encontró el registro' });
+        }
+    } catch (err) {
+        console.error('Registro.delete error:', err);
+        res.status(500).json({ success: false, mensaje: 'Error al eliminar registro' });
+    }
+});
+
 // Actualizar usuario por ID
 router.put('/:id', async (req, res) => {
     try {

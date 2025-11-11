@@ -1,22 +1,28 @@
 {
-    "actividades": [
-        {
-            "img": "assets/Actividades/scuba-driven-1900x700.webp",
-            "titulo": "Actividad 1",
-            "descripcion": "Descripción de la actividad 1. Fecha: 20/06/2025",
-            "id": 1
-        },
-        {
-            "img": "assets/Actividades/que-es-composing-cabecera.jpg",
-            "titulo": "Actividad 2",
-            "descripcion": "Descripción de la actividad 2. Fecha: 21/06/2025",
-            "id": 2
-        },
-        {
-            "img": "assets/Actividades/scuba-driven-1900x700.webp",
-            "titulo": "Actividad 3",
-            "descripcion": "Descripción de la actividad 3. Fecha: 22/06/2025",
-            "id": 3
-        }
-    ]
+  "actividades": [
+    {
+      "img": "assets/Actividades/scuba-driven-1900x700.webp",
+      "titulo": "Actividad 1",
+      "descripcion": "Descripción de la actividad 1. Fecha: 20/06/2025",
+      "id": 1,
+      "fechaInicio": "2025-11-13",
+      "fechaFin": "2025-11-30",
+      "texto": "Actividad 1"
+    },
+    {
+      "img": "assets/Actividades/que-es-composing-cabecera.jpg",
+      "titulo": "Actividad 2",
+      "descripcion": "Descripción de la actividad 2. Fecha: 21/06/2025",
+      "id": 2
+    },
+    {
+      "img": "assets/Actividades/1762213689082_Captura de pantalla 2024-12-09 204033.png",
+      "titulo": "Actividad 3",
+      "descripcion": "Pesca en el planetario",
+      "id": 3,
+      "texto": "Actividad 3",
+      "fechaInicio": "2025-11-20",
+      "fechaFin": "2025-11-18"
+    }
+  ]
 }

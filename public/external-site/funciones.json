@@ -7,10 +7,11 @@
       "id": 1
     },
     {
-      "img": "assets/Horario_Funciones/si_hay_funcion.webp",
+      "img": "assets/Horario_Funciones/1762214371946_Captura de pantalla 2024-11-14 192347.png",
       "texto": "Martes",
       "estado": "si_hay_funcion",
-      "id": 2
+      "id": 2,
+      "previewUrl": "blob:http://localhost:5173/22fc1a72-e3b5-4b0f-928e-ccabc64b4463"
     },
     {
       "img": "assets/Horario_Funciones/si_hay_funcion.webp",

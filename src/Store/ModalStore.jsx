@@ -27,7 +27,7 @@ export const useModalStore = create((set) => ({
 
     // Agregar Usuario
     insertarUsuario: async (usuario) => {
-        const res = await fetch("http://localhost:3000/api/Insert_user", {
+        const res = await fetch("/api/Insert_user", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(usuario),
@@ -40,7 +40,7 @@ export const useModalStore = create((set) => ({
 
     // Editar un usuario existente
     editarUsuario: async (p) => {
-        // Use the standardized endpoint /api/usuarios/:id
+
         const res = await fetch(`/api/usuarios/${p.id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -54,7 +54,6 @@ export const useModalStore = create((set) => ({
 
     // Eliminar un usuario
     eliminarUsuario: async (id) => {
-        // Use the standardized endpoint /api/usuarios/:id
         const res = await fetch(`/api/usuarios/${id}`, {
             method: "DELETE"
         });

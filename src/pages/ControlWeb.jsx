@@ -25,78 +25,86 @@ export const ControlWeb = () => {
     const [ newModalOpen , setNewModalOpen] = useState(false);
 
 
-    useEffect(() => {
-        const cargarSalas = async () => {
-            try {
-                const response = await fetch('/external-site/salas.json');
-                if (!response.ok) throw new Error('Error al cargar salas.json');
-                const data = await response.json();
-                
-                // Convertir el formato de salas.json al formato que espera ImageCarousel
-                const salasFormateadas = data.salas.map(sala => ({
-                    src: `/external-site/Pagina-Web/${sala.img}`,
-                    alt: sala.texto,
-                    description: sala.texto,
-                    id: sala.id
-                }));
-                
-                setImgSalas(salasFormateadas);
-                setError(null);
-            } catch (err) {
-                toast.error('Error cargando salas:', err);
-                setError('No se pudieron cargar las salas');
-            } finally {
-                setLoading(false);
-            }
-        };
+    const cargarSalas = async () => {
+        try {
+            const response = await fetch('/external-site/salas.json');
+            if (!response.ok) throw new Error('Error al cargar salas.json');
+            const data = await response.json();
+            
+            // Convertir el formato de salas.json al formato que espera ImageCarousel
+            const salasFormateadas = data.salas.map(sala => ({
+                src: `/external-site/Pagina-Web/${sala.img}`,
+                alt: sala.texto,
+                description: sala.texto,
+                id: sala.id
+            }));
+            
+            setImgSalas(salasFormateadas);
+            setError(null);
+        } catch (err) {
+            toast.error('Error cargando salas:', err);
+            setError('No se pudieron cargar las salas');
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         cargarSalas();
     }, []);
 
     const [imgFunciones, setImgFunciones] = useState([]);
     const [imgActividades, setImgActividades] = useState([]);
 
-    // Cargar Funciones
+    const cargarFunciones = async () => {
+        try {
+            const response = await fetch('/external-site/funciones.json');
+            if (!response.ok) throw new Error('Error al cargar funciones.json');
+            const data = await response.json();
+            const funcionesFormateadas = data.dias.map(dia => ({
+                src: `/external-site/Pagina-Web/${dia.img}`,
+                alt: dia.texto,
+                description: dia.texto,
+                id: dia.id
+            }));
+            setImgFunciones(funcionesFormateadas);
+        } catch (err) {
+            console.error('Error cargando funciones:', err);
+            setImgFunciones([]);
+        }
+    };
+
+    const cargarActividades = async () => {
+        try {
+            const response = await fetch('/external-site/actividades.json');
+            if (!response.ok) throw new Error('Error al cargar actividades.json');
+            const data = await response.json();
+            const actividadesFormateadas = data.actividades.map(actividad => ({
+                src: `/external-site/Pagina-Web/${actividad.img}`,
+                alt: actividad.titulo,
+                description: actividad.descripcion,
+                id: actividad.id
+            }));
+            setImgActividades(actividadesFormateadas);
+        } catch (err) {
+            console.error('Error cargando actividades:', err);
+            setImgActividades([]);
+        }
+    };
+
+    const recargarDatos = () => {
+        cargarSalas();
+        cargarFunciones();
+        cargarActividades();
+        toast.success('Datos actualizados');
+    };
+
+    // Efectos para cargar datos iniciales
     useEffect(() => {
-        const cargarFunciones = async () => {
-            try {
-                const response = await fetch('/external-site/funciones.json');
-                if (!response.ok) throw new Error('Error al cargar funciones.json');
-                const data = await response.json();
-                const funcionesFormateadas = data.dias.map(dia => ({
-                    src: `/external-site/Pagina-Web/${dia.img}`,
-                    alt: dia.texto,
-                    description: dia.texto,
-                    id: dia.id
-                }));
-                setImgFunciones(funcionesFormateadas);
-            } catch (err) {
-                console.error('Error cargando funciones:', err);
-                setImgFunciones([]);
-            }
-        };
         cargarFunciones();
     }, []);
 
-    // Cargar Actividades
     useEffect(() => {
-        const cargarActividades = async () => {
-            try {
-                const response = await fetch('/external-site/actividades.json');
-                if (!response.ok) throw new Error('Error al cargar actividades.json');
-                const data = await response.json();
-                const actividadesFormateadas = data.actividades.map(actividad => ({
-                    src: `/external-site/Pagina-Web/${actividad.img}`,
-                    alt: actividad.titulo,
-                    description: actividad.descripcion,
-                    id: actividad.id
-                }));
-                setImgActividades(actividadesFormateadas);
-            } catch (err) {
-                console.error('Error cargando actividades:', err);
-                setImgActividades([]);
-            }
-        };
         cargarActividades();
     }, []);
 
@@ -104,7 +112,8 @@ export const ControlWeb = () => {
 const handleEdit = (slide, type) => {
     setCurrentData({
         ...slide,
-        type // 'salas', 'funciones', o 'actividades'
+        type, // 'salas', 'funciones', o 'actividades'
+        operacion: 'editar'
     });
     setModalOpen(true);
 };
@@ -180,7 +189,16 @@ return (
                         <option value="Actividad">Actividad</option>
                       </select>
                       <button className="bg-blue-500 w-sm text-white rounded-md cursor-pointer"
-                      onClick={() => setData({ Opcion: 'Crear', Tipo: document.getElementById('CrearNuevo').value })}
+                      onClick={() => {
+                        const tipo = document.getElementById('CrearNuevo').value.toLowerCase();
+                        setCurrentData({
+                          operacion: 'nuevo',
+                          type: tipo
+                        });
+                        setModalOpen(true);
+                        setRotado(false);
+                        setNewModalOpen(false);
+                      }}
                       >
                         Aceptar
                       </button>
@@ -194,6 +212,7 @@ return (
               isOpen={modalOpen}
               onClose={() => setModalOpen(false)}
               data={currentData}
+              onUpdate={recargarDatos}
           />
           <Toaster/>
     </main>

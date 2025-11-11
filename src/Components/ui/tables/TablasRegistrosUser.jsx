@@ -154,7 +154,7 @@ import { toast , Toaster } from 'sonner';
                 onClick={() => {
                     if (selectedIds.length > 0) {
                     setModalAction('delete');
-                    setTipoSelect('usuario');
+                    setTipoSelect('Registro Usuario');
                     setIsModalOpen(true);
                     } else {
                     toast.error('Por favor, seleccione un registro para eliminar');
@@ -162,20 +162,6 @@ import { toast , Toaster } from 'sonner';
                 }}
                 >
                 <Icon icon="line-md:account-delete" width="24" height="24"  style={{color: '#fff'}} />
-                </button>
-                <button
-                className="hover:bg-blue-600 bg-blue-800 transition-all duration-300 text-white px-3 py-1 rounded text-sm cursor-pointer"
-                onClick={() => {
-                    if (selectedIds.length === 1) {
-                    setModalAction('edit');
-                    setTipoSelect('usuario');
-                    setIsModalOpen(true);
-                    } else {
-                    toast.error('Por favor, seleccione un registro para editar');
-                    }
-                }}
-                >
-                <Icon icon="line-md:edit-twotone" width="24" height="24"  style={{color: '#fff'}} />
                 </button>
             </div>
 
@@ -191,7 +177,6 @@ import { toast , Toaster } from 'sonner';
                 className="display w-full text-sm border-gray-800 dark:text-white rounded-md"
                 options={{
                     responsive: true,
-                    // select: true,
                     pagingType: 'simple_numbers',
                     language: {
                     search:'🔎 Buscar :',

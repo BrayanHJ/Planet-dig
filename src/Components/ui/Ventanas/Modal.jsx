@@ -6,8 +6,9 @@ import { useState, useEffect } from 'react';
 import { toast, Toaster } from 'sonner';
 
 export const Modal = ({ action, onClose, userId }) => {
-    const { tipoSelect, editarUsuario, eliminarUsuario } = useModalStore();
+    const { tipoSelect, editarUsuario, eliminarUsuario, eliminarRegistroUsuario } = useModalStore();
     const cargarUsuarios = useTablesStore((s) => s.cargarUsuarios);
+    const cargarRegistrosUser = useTablesStore((s) => s.cargarRegistrosUser);
     const [formData, setFormData] = useState({
         id: "",
         usuario: "",
@@ -62,6 +63,32 @@ export const Modal = ({ action, onClose, userId }) => {
         e.preventDefault();
         try {
             if (action === 'delete') {
+                if (tipoSelect === "Registro Usuario") {
+                    try {
+                        await eliminarRegistroUsuario(userId);
+                        toast.success('Registro eliminado correctamente');
+                        await cargarRegistrosUser();
+                        // Limpiamos la selección y cerramos el modal
+                        onClose();
+                    } catch (err) {
+                        console.error(err);
+                        toast.error(err.message || 'Error al eliminar registro');
+                    }
+                } else {
+                    try {
+                        await eliminarUsuario(userId);
+                        toast.success('Usuario eliminado correctamente');
+                        await cargarUsuarios();
+                        // Limpiamos la selección y cerramos el modal
+                        onClose();
+                    // Asegurarnos de que los radio buttons se desmarquen
+                    const radios = document.getElementsByName('selectedRow');
+                    radios.forEach(radio => radio.checked = false);
+                } catch (err) {
+                    console.error(err);
+                    toast.error(err.message || 'Error al eliminar usuario');
+                }
+                }
                 try {
                     await eliminarUsuario(userId);
                     toast.success('Usuario eliminado correctamente');
@@ -166,14 +193,23 @@ return (
                             <div className="text-center">
                                 <Icon icon="line-md:alert-circle" className="mx-auto mb-4" width="48" height="48" style={{color: '#ef4444'}} />
                                 <p className="text-gray-700 dark:text-gray-300 mb-6">
-                                    ¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.
+                                    ¿Estás seguro de que deseas eliminar {tipoSelect === "Registro Usuario" 
+                                        ? "este registro" 
+                                        : "este usuario"}? Esta acción no se puede deshacer.
                                 </p>
 
-                                <span className="text-amber-300">Datos del Usuario:</span>
+                                <span className="text-amber-300">
+                                    {tipoSelect === "Registro Usuario" ? "Datos del Registro:" : "Datos del Usuario:"}
+                                </span>
 
                                 <br />
 
-                                <p className="text-center mb-5 mt-3">{`${formData.id} ${formData.usuario}`}</p>
+                                <p className="text-center mb-5 mt-3">
+                                    {tipoSelect === "Registro Usuario" 
+                                        ? `ID del Registro: ${userId}`
+                                        : `${formData.id} ${formData.usuario}`
+                                    }
+                                </p>
                                 
                                 <div className="flex justify-center gap-4">
                                     <button
@@ -188,7 +224,7 @@ return (
                                         className="bg-red-500 hover:bg-red-600 text-white rounded-md px-4 py-2 flex items-center gap-2"
                                     >
                                         <Icon icon="line-md:confirm" width="20" height="20" />
-                                        Eliminar 
+                                        Eliminar {tipoSelect === "Registro Usuario" ? "Registro" : "Usuario"}
                                     </button>
                                 </div>
                             </div>
@@ -272,4 +308,4 @@ return (
         </motion.div>
     </AnimatePresence>
     );
-}; 
+};
