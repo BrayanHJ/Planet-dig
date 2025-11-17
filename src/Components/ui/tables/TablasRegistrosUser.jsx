@@ -10,6 +10,7 @@ import 'datatables.net-buttons-dt/css/buttons.dataTables.css';
 import 'datatables.net-dt/css/dataTables.dataTables.css';
 import { useTablesStore } from '../../../Store/TablesStore';
 import { useModalStore } from '../../../Store/ModalStore';
+import { useLogStore } from '../../../Store/LogStore';
 import BtnExport from '../Buttons/BtnExport';
 import { Modal } from '../Ventanas/Modal.jsx';
 import { toast , Toaster } from 'sonner';
@@ -42,6 +43,12 @@ import { toast , Toaster } from 'sonner';
             });
             const data = await response.json();
             if (data.success) {
+            // Log the deletion (best-effort)
+            try {
+                useLogStore.getState().addLog({ Accion: 'EliminarRegistroUsuario', Detalle: `registro_id:${id}` });
+            } catch (logErr) {
+                console.warn('Failed to send delete registro log', logErr);
+            }
             cargarRegistrosUser(); // recargar lista
             } else {
             toast.error(data.mensaje || 'Error al eliminar usuario');

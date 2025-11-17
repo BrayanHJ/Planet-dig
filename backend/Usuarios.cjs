@@ -65,11 +65,30 @@ router.get('/:id/edit', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const [result] = await db.execute('DELETE FROM usuarios WHERE id_usuarios = ?', [id]);
+        console.log(`Intentando eliminar usuario con id: ${id}`);
+        
+        // Try with 'id' first, then fallback to 'id_usuarios'
+        let result;
+        try {
+            console.log(`Intentando query con columna 'id'`);
+            [result] = await db.execute('DELETE FROM usuarios WHERE id = ?', [id]);
+            console.log(`DELETE con 'id' completado. affectedRows: ${result.affectedRows}`);
+        } catch (err) {
+            console.log(`Error con 'id': ${err.code} - ${err.message}`);
+            if (err && err.code === 'ER_BAD_FIELD_ERROR') {
+                // Try alternate column name
+                console.log(`Intentando query con columna 'id_usuarios'`);
+                [result] = await db.execute('DELETE FROM usuarios WHERE id_usuarios = ?', [id]);
+                console.log(`DELETE con 'id_usuarios' completado. affectedRows: ${result.affectedRows}`);
+            } else {
+                throw err;
+            }
+        }
+        
         if (result.affectedRows > 0) {
-        res.json({ success: true, mensaje: 'Usuario eliminado correctamente' });
+            res.json({ success: true, mensaje: 'Usuario eliminado correctamente' });
         } else {
-        res.status(404).json({ success: false, mensaje: 'No se encontró el usuario' });
+            res.status(404).json({ success: false, mensaje: 'No se encontró el usuario' });
         }
     } catch (err) {
         console.error('Usuarios.delete error:', err);
@@ -159,6 +178,10 @@ router.post('/', async (req, res) => {
             );
             return res.json({ success: true, mensaje: 'Usuario creado', id: result.insertId });
         } catch (err) {
+            // Duplicate key error
+            if (err && err.code === 'ER_DUP_ENTRY') {
+                return res.status(400).json({ success: false, mensaje: `El usuario "${usuario}" ya existe` });
+            }
             // Retry with `password` column if schema uses that
             if (err && err.code === 'ER_BAD_FIELD_ERROR') {
                 try {
@@ -168,6 +191,9 @@ router.post('/', async (req, res) => {
                     );
                     return res.json({ success: true, mensaje: 'Usuario creado', id: result2.insertId });
                 } catch (err2) {
+                    if (err2 && err2.code === 'ER_DUP_ENTRY') {
+                        return res.status(400).json({ success: false, mensaje: `El usuario "${usuario}" ya existe` });
+                    }
                     console.error('Usuarios.create retry error:', err2);
                     return res.status(500).json({ success: false, mensaje: 'Error al crear usuario' });
                 }

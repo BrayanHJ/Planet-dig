@@ -18,6 +18,8 @@ const carruselRouter = require('./backend/Carrusel.cjs');
 const fileUpload = require('express-fileupload');
 const updateItem = require('./backend/updateItem.cjs');
 const deleteItem = require('./backend/deleteItem.cjs');
+const Viws = require('./backend/Viws.cjs');
+const activityLog = require('./backend/Activity_Log.cjs');
 
 // Configurar middleware para manejar archivos
 app.use(fileUpload({
@@ -48,8 +50,13 @@ app.use('/api/carrusel', carruselRouter);
 app.post('/api/updateItem', updateItem);
 app.delete('/api/deleteItem', deleteItem);
 
+// Funciones de tablas Tablas
+app.use('/api/Viws', Viws);
+// Activity log endpoints
+app.use('/api/Activity_Log', activityLog);
+
 // Start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });

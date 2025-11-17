@@ -30,17 +30,6 @@ export const BoletosStore = create((set, get) => ({
     setSeleccionados: (items) => set({ seleccionados: items }),
     clearSeleccionados: () => set({ seleccionados: [] }),
 
-    //Agregar registro de venta
-    insertarVenta: async (usuario) => {
-        const res = await fetch("/api/Insert_user", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(usuario),
-        });
-        alert(usuario);
-        const data = await res.json();
-        if (!data.success) throw new Error(data.mensaje || "Error al insertar usuario");
-        return data;
-    },
+    
 
 }));

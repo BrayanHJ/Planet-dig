@@ -17,7 +17,7 @@ export const SideBar = () => {
         {label: "Pagina Web", Icon: "fluent-mdl2:web-environment", to: "/Panel/ControlWeb",Permiso:"Admin"},
         {label: "Usuarios", Icon: "qlementine-icons:user-16", to: "/Panel/Usuarios", Permiso:"Admin"},
         {label: "Registros", Icon: "mdi:user-card-details-outline", to: "/Panel/RegistroUsuarios",Permiso:"Admin"},
-        {label: "Actividad", Icon: "wpf:usershield", to: "/Panel/Actividad", Permiso:""},
+        {label: "Actividad", Icon: "wpf:usershield", to: "/Panel/ActividadesLog", Permiso:""},
         {label: "Boletos", Icon: "mdi:credit-card", to: "/Panel/Boletos", Permiso:""},
         ]
     // Si es Admin, muestra todos; si no, oculta los que tienen Permiso: 'Admin'

@@ -37,7 +37,6 @@ export const useTablesStore = create((set, get) => ({
         }
     },
 
-
     cargarRegistrosUser: async () => {
         set({ loading: true, error: null });
         try {
@@ -52,6 +51,44 @@ export const useTablesStore = create((set, get) => ({
             set({ registrosUser: data.registros, loading: false });
         } catch (err) {
             console.error('cargarRegistrosUser error:', err);
+            set({ error: err.message || String(err), loading: false });
+        }
+    },
+
+    cargarRegistrosVentas: async () => {
+        set({ loading: true, error: null });
+        try {
+            const res = await fetch("/api/boletos/Registros");
+            const data = await res.json();
+            console.log('cargarRegistrosVentas: response', res.status, data);
+            if (!data.success) {
+                const msg = data.mensaje || "Error al cargar registros de ventas";
+                set({ error: msg, loading: false });
+                throw new Error(msg);
+            }
+            // Accept multiple response shapes: { registros } or { boletos }
+            const registros = data.registros || data.boletos || data.Boletos || [];
+            set({ registrosVentas: registros, loading: false });
+        } catch (err) {
+            console.error('cargarRegistrosVentas error:', err);
+            set({ error: err.message || String(err), loading: false });
+        }
+    },
+
+    cargarRegistrosLog: async () => {
+        set({ loading: true, error: null });
+        try {
+            const res = await fetch("/api/RegistrosLog");
+            const data = await res.json();
+            console.log('cargarRegistrosLog: response', res.status, data);
+            if (!data.success) {
+                const msg = data.mensaje || "Error al cargar registros de log";
+                set({ error: msg, loading: false });
+                throw new Error(msg);
+            }
+            set({ registrosLog: data.registros, loading: false });
+        } catch (err) {
+            console.error('cargarRegistrosLog error:', err);
             set({ error: err.message || String(err), loading: false });
         }
     },

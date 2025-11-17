@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { toast, Toaster } from 'sonner';
 
 export const Modal = ({ action, onClose, userId }) => {
-    const { tipoSelect, editarUsuario, eliminarUsuario, eliminarRegistroUsuario } = useModalStore();
+    const { tipoSelect, editarUsuario, eliminarUsuario, eliminarRegistroUsuario, insertarUsuario } = useModalStore();
     const cargarUsuarios = useTablesStore((s) => s.cargarUsuarios);
     const cargarRegistrosUser = useTablesStore((s) => s.cargarRegistrosUser);
     const [formData, setFormData] = useState({
@@ -16,10 +16,13 @@ export const Modal = ({ action, onClose, userId }) => {
         contrasena: "",
         Rol: "usuario"  // Valor por defecto
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
-            if ((action === 'edit' || action === 'delete') && userId) {
+            // Only fetch usuario details when the modal is editing/deleting a Usuario
+            // If tipoSelect === 'Registro Usuario' we skip this fetch (registro data is shown differently)
+            if ((action === 'edit' || action === 'delete') && userId && tipoSelect !== 'Registro Usuario') {
                 console.log('Modal fetchUserData userId:', userId);
                 try {
                     const response = await fetch(`/api/usuarios/${userId}`);
@@ -32,11 +35,12 @@ export const Modal = ({ action, onClose, userId }) => {
                     let data;
                     try {
                         data = await response.json();
-                    } catch (parseErr) {
+                    } catch (err) {
                         const text = await responseClone.text();
                         console.error('Modal fetchUserData: response not JSON, body:', text);
                         console.error('Response status:', response.status);
                         console.error('Response headers:', Object.fromEntries(response.headers));
+                        console.error(err);
                         throw new Error('Error al procesar respuesta del servidor');
                     }
                     console.log('Modal fetchUserData response:', response.status, data);
@@ -57,10 +61,11 @@ export const Modal = ({ action, onClose, userId }) => {
             }
         };
         fetchUserData();
-    }, [action, userId]);
+    }, [action, userId, tipoSelect]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
         try {
             if (action === 'delete') {
                 if (tipoSelect === "Registro Usuario") {
@@ -70,6 +75,9 @@ export const Modal = ({ action, onClose, userId }) => {
                         await cargarRegistrosUser();
                         // Limpiamos la selección y cerramos el modal
                         onClose();
+                        // Asegurarnos de que los radio buttons se desmarquen
+                        const radios = document.getElementsByName('selectedRow');
+                        radios.forEach(radio => radio.checked = false);
                     } catch (err) {
                         console.error(err);
                         toast.error(err.message || 'Error al eliminar registro');
@@ -81,26 +89,13 @@ export const Modal = ({ action, onClose, userId }) => {
                         await cargarUsuarios();
                         // Limpiamos la selección y cerramos el modal
                         onClose();
-                    // Asegurarnos de que los radio buttons se desmarquen
-                    const radios = document.getElementsByName('selectedRow');
-                    radios.forEach(radio => radio.checked = false);
-                } catch (err) {
-                    console.error(err);
-                    toast.error(err.message || 'Error al eliminar usuario');
-                }
-                }
-                try {
-                    await eliminarUsuario(userId);
-                    toast.success('Usuario eliminado correctamente');
-                    await cargarUsuarios();
-                    // Limpiamos la selección y cerramos el modal
-                    onClose();
-                    // Asegurarnos de que los radio buttons se desmarquen
-                    const radios = document.getElementsByName('selectedRow');
-                    radios.forEach(radio => radio.checked = false);
-                } catch (err) {
-                    console.error(err);
-                    toast.error(err.message || 'Error al eliminar usuario');
+                        // Asegurarnos de que los radio buttons se desmarquen
+                        const radios = document.getElementsByName('selectedRow');
+                        radios.forEach(radio => radio.checked = false);
+                    } catch (err) {
+                        console.error(err);
+                        toast.error(err.message || 'Error al eliminar usuario');
+                    }
                 }
             } else if (action === 'edit') {
                 try {
@@ -119,30 +114,23 @@ export const Modal = ({ action, onClose, userId }) => {
                     toast.error(err.message || 'Error al actualizar usuario');
                 }
             } else if (action === 'agregar') {
-                // crear nuevo usuario (no hay función en el modal store para crear)
                 try {
-                    const response = await fetch('/api/usuarios', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formData)
-                    });
-                    const data = await response.json();
-                    if (data.success) {
-                        toast.success('Usuario creado correctamente');
-                        await cargarUsuarios();
-                        onClose();
-                    } else {
-                        toast.error(data.mensaje || 'Error al crear usuario');
-                    }
+                    // Use the store method so it logs the action via LogStore
+                    await insertarUsuario(formData);
+                    toast.success('Usuario creado correctamente');
+                    await cargarUsuarios();
+                    onClose();
                 } catch (err) {
                     console.error(err);
-                    toast.error('Error al crear usuario');
+                    toast.error(err.message || 'Error al crear usuario');
                 }
             }
             
         } catch (error) {
             console.error('Error:', error);
             toast.error('Error en la operación');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -221,7 +209,8 @@ return (
                                     </button>
                                     <button
                                         onClick={handleSubmit}
-                                        className="bg-red-500 hover:bg-red-600 text-white rounded-md px-4 py-2 flex items-center gap-2"
+                                        disabled={isSubmitting}
+                                        className={"bg-red-500 hover:bg-red-600 text-white rounded-md px-4 py-2 flex items-center gap-2 " + (isSubmitting ? 'opacity-50 cursor-not-allowed' : '')}
                                     >
                                         <Icon icon="line-md:confirm" width="20" height="20" />
                                         Eliminar {tipoSelect === "Registro Usuario" ? "Registro" : "Usuario"}
@@ -294,7 +283,8 @@ return (
                                     </button>
                                     <button
                                         type="submit"
-                                        className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 flex items-center gap-2"
+                                        disabled={isSubmitting}
+                                        className={"bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 flex items-center gap-2 " + (isSubmitting ? 'opacity-50 cursor-not-allowed' : '')}
                                     >
                                         <Icon icon={action === 'edit' ? "line-md:confirm" : "line-md:confirm"} width="20" height="20" />
                                         {action === 'edit' ? 'Guardar Cambios' : 'Crear Usuario'}

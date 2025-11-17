@@ -1,102 +1,79 @@
 
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import CanvasJSReact from '@canvasjs/react-charts';
 
-var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+const CanvasJS = CanvasJSReact.CanvasJS;
+const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-class PieChart extends Component {
-	render() {
-		const options = {
-			animationEnabled: true,
-			theme: "dark1",
-			title:{
-				text: "Prueba 1"
-			},
-			axisX:{
-				valueFormatString: "DD MMM",
-				crosshair: {
-					enabled: true,
-					snapToDataPoint: true
-				}
-			},
-			axisY: {
-				title: "Number of Visits",
-				crosshair: {
-					enabled: true
-				}
-			},
-			toolTip:{
-				shared:true
-			},  
-			legend:{
-				cursor: "pointer",
-				verticalAlign: "top",
-				horizontalAlign: "right",
-				dockInsidePlotArea: true,
-				itemclick: function(e) {
-					if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-						e.dataSeries.visible = false;
-					} else{
-						e.dataSeries.visible = true;
-					}
-					e.chart.render();
-				}
-			},
-			data: [{
-				type: "line",
-				showInLegend: true,
-				name: "Amarillo",
-				lineDashType: "dash",
-				markerType: "square",
-				xValueFormatString: "DD MMM, YYYY",
-				dataPoints: [
-					{ x: new Date(2022, 0, 3), y: 650 },
-					{ x: new Date(2022, 0, 4), y: 700 },
-					{ x: new Date(2022, 0, 5), y: 710 },
-					{ x: new Date(2022, 0, 6), y: 658 },
-					{ x: new Date(2022, 0, 7), y: 734 },
-					{ x: new Date(2022, 0, 8), y: 963 },
-					{ x: new Date(2022, 0, 9), y: 847 },
-					{ x: new Date(2022, 0, 10), y: 853 },
-					{ x: new Date(2022, 0, 11), y: 869 },
-					{ x: new Date(2022, 0, 12), y: 943 },
-					{ x: new Date(2022, 0, 13), y: 970 },
-					{ x: new Date(2022, 0, 14), y: 869 },
-					{ x: new Date(2022, 0, 15), y: 890 },
-					{ x: new Date(2022, 0, 16), y: 930 }
-				]
-			}, {
-				type: "line",
-				showInLegend: true,
-				name: "Azul",
-				lineDashType: "dot",
-				dataPoints: [
-					{ x: new Date(2022, 0, 3), y: 510 },
-					{ x: new Date(2022, 0, 4), y: 560 },
-					{ x: new Date(2022, 0, 5), y: 540 },
-					{ x: new Date(2022, 0, 6), y: 558 },
-					{ x: new Date(2022, 0, 7), y: 544 },
-					{ x: new Date(2022, 0, 8), y: 693 },
-					{ x: new Date(2022, 0, 9), y: 657 },
-					{ x: new Date(2022, 0, 10), y: 663 },
-					{ x: new Date(2022, 0, 11), y: 639 },
-					{ x: new Date(2022, 0, 12), y: 673 },
-					{ x: new Date(2022, 0, 13), y: 660 },
-					{ x: new Date(2022, 0, 14), y: 562 },
-					{ x: new Date(2022, 0, 15), y: 643 },
-					{ x: new Date(2022, 0, 16), y: 570 }
-				]
-			}]
-		}	
-		return (
-		<div>
-			<CanvasJSChart options = {options}
-				onRef={ref => this.chart = ref}
-			/>
-			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
-		</div>
-		);
-	}
-}
-export default PieChart;                              
+// PieChart that fetches data from the backend view /api/viws/TipoBoleto
+// and renders a doughnut/pie showing count per ticket type.
+const PieChart = () => {
+  const [dataPoints, setDataPoints] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+  // server mounts this router at /api/Viws (capital V) in server.cjs
+  const res = await fetch('/api/Viws/TipoBoleto');
+        const json = await res.json();
+        if (!json.success) throw new Error(json.mensaje || 'Error fetching view');
+
+        const rows = Array.isArray(json.registros) ? json.registros : [];
+
+        // Heuristically pick label and value fields
+        const pts = rows.map(row => {
+          // find label: prefer boleto, tipo, name, label
+          const keys = Object.keys(row);
+          const labelKey = keys.find(k => /boleto|tipo|name|label/i.test(k)) || keys.find(k => typeof row[k] === 'string') || keys[0];
+          // find numeric value: prefer cantidad, total, value, y
+          const valueKey = keys.find(k => /cantidad|total|valor|value|y|count|cantidad_total/i.test(k)) || keys.find(k => typeof row[k] === 'number');
+          const label = String(row[labelKey] ?? labelKey);
+          const value = Number(row[valueKey] ?? Object.values(row).find(v => typeof v === 'number') ?? 0);
+          return { label, y: isNaN(value) ? 0 : value };
+        });
+
+        if (mounted) setDataPoints(pts);
+      } catch (err) {
+        console.error('PieChart fetch error', err);
+        if (mounted) setError(err.message || String(err));
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    fetchData();
+    return () => { mounted = false; };
+  }, []);
+
+  const options = {
+    animationEnabled: true,
+    theme: 'dark2',
+    title: {
+      text: 'Distribución por tipo de boleto'
+    },
+    data: [
+      {
+        type: 'doughnut',
+        indexLabel: '{label}: {y}',
+        yValueFormatString: '#,###',
+        showInLegend: true,
+        legendText: '{label}',
+        dataPoints: dataPoints
+      }
+    ]
+  };
+
+  if (loading) return <div>Cargando gráfica...</div>;
+  if (error) return <div className="text-red-500">Error al cargar gráfica: {error}</div>;
+
+  return (
+    <div>
+      <CanvasJSChart options={options} />
+    </div>
+  );
+};
+
+export default PieChart;

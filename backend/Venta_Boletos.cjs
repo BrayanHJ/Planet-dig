@@ -24,7 +24,7 @@ router.post('/venta', async (req, res) => {
 
     // Obtener el último folio_venta para incrementar
     const [lastFolios] = await db.execute('SELECT folio_venta FROM planetario.boletos_vendidos ORDER BY id DESC LIMIT 1');
-    
+  
     const year = new Date().getFullYear();
     let sequence = 1;
     
@@ -41,7 +41,8 @@ router.post('/venta', async (req, res) => {
     try {
       // Insertar boletos vendidos
       for (const item of items) {
-        const foliosStr = item.folios.join(',');
+        // Formato: id_boleto[folio1,folio2,folio3]
+        const foliosStr = `${item.id_boleto}[${item.folios.join(',')}]`;
 
         await connection.execute(
           `INSERT INTO planetario.boletos_vendidos 
@@ -79,6 +80,99 @@ router.post('/venta', async (req, res) => {
     res.status(500).json({
       success: false,
       mensaje: 'Error al registrar la venta: ' + (err.message || String(err))
+    });
+  } finally {
+    if (connection) connection.release();
+  }
+});
+
+// Obtener Venta de Boletos
+router.get('/Registros', async (req, res) => {
+  try {
+    const [results] = await db.execute('SELECT * FROM ventas');
+    res.json({ success: true, boletos: results });
+  } catch (err) {
+    console.error('Tablas.Boletos error:', err);
+    res.status(500).json({ success: false, mensaje: 'Error en el servidor' });
+  }
+});
+
+
+// Detalles de una venta por folio_venta
+router.get('/Registros/:folio', async (req, res) => {
+  try {
+    const folio = req.params.folio;
+    if (!folio) return res.status(400).json({ success: false, mensaje: 'Folio requerido' });
+
+    const [rows] = await db.execute(
+      `SELECT 
+        bv.id,
+        bv.folio_venta,
+        b.Boleto,           -- Nombre del boleto (en lugar de id_boleto)
+        bv.cantidad,
+        bv.folios,
+        bv.fecha,
+        b.Precio
+      FROM planetario.boletos_vendidos bv
+      LEFT JOIN planetario.boletos b ON bv.id_boleto = b.id_boleto
+      WHERE bv.folio_venta = ?`,
+      [folio]
+    );
+
+    res.json({ success: true, detalles: rows });
+  } catch (err) {
+    console.error('Error al obtener detalles de venta:', err);
+    res.status(500).json({ success: false, mensaje: 'Error en el servidor' });
+  }
+});
+
+// Eliminar venta completa por folio_venta (elimina de ambas tablas)
+router.delete('/Registros/:folio', async (req, res) => {
+  let connection;
+  try {
+    const folio = req.params.folio;
+    if (!folio) return res.status(400).json({ success: false, mensaje: 'Folio requerido' });
+
+    connection = await db.getConnection();
+    await connection.beginTransaction();
+
+    try {
+      // Obtener los registros de boletos_vendidos antes de eliminar
+      const [ventaRecords] = await connection.execute(
+        'SELECT id_boleto, folios FROM planetario.boletos_vendidos WHERE folio_venta = ?',
+        [folio]
+      );
+
+      // Eliminar de la tabla boletos_vendidos
+      await connection.execute(
+        'DELETE FROM planetario.boletos_vendidos WHERE folio_venta = ?',
+        [folio]
+      );
+
+      // Eliminar de la tabla ventas
+      await connection.execute(
+        'DELETE FROM planetario.ventas WHERE folio_venta = ?',
+        [folio]
+      );
+
+      await connection.commit();
+
+      res.json({
+        success: true,
+        mensaje: 'Venta eliminada correctamente',
+        registrosEliminados: ventaRecords.length
+      });
+
+    } catch (err) {
+      if (connection) await connection.rollback();
+      throw err;
+    }
+
+  } catch (err) {
+    console.error('Error al eliminar venta:', err);
+    res.status(500).json({
+      success: false,
+      mensaje: 'Error al eliminar la venta: ' + (err.message || String(err))
     });
   } finally {
     if (connection) connection.release();

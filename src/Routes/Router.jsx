@@ -10,6 +10,7 @@ import {ControlWeb} from "../pages/ControlWeb.jsx";
 import {Graficas} from "../pages/Graficas.jsx";
 import {Usuarios} from "../pages/Usuarios.jsx";
 import { RegistroUsuarios } from "../pages/RegistroUsuarios.jsx";
+import {ActividadesLog} from "../pages/ActividadesLog.jsx";
 import { Boletos } from "../pages/Boletos.jsx";
 
 export function MyRouter() {
@@ -29,6 +30,7 @@ export function MyRouter() {
                     <Route path="Graficas" element={<Graficas />} />
                     <Route path="Usuarios" element={<Usuarios />} />
                     <Route path="RegistroUsuarios" element={<RegistroUsuarios />} />
+                    <Route path="ActividadesLog" element={<ActividadesLog/>} />
                     <Route path="Boletos" element={<Boletos />} />
 
                     <Route path="*" element={<Page404 />} />
