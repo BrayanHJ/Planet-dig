@@ -5,7 +5,7 @@ const db = require('./db.cjs');
 // Obtener Boletos Disponibles
 router.get('/', async (req, res) => {
   try {
-    const [results] = await db.execute('SELECT * FROM boletos');
+    const [results] = await db.execute('SELECT * FROM boletos ORDER BY id_boleto ASC');
     res.json({ success: true, boletos: results });
   } catch (err) {
     console.error('Tablas.Boletos error:', err);
@@ -155,12 +155,42 @@ router.delete('/Registros/:folio', async (req, res) => {
         [folio]
       );
 
+      // Registrar en el Activity Log usando petición HTTP al endpoint
+      // Obtener usuario desde UserStore si está disponible
+      let id_usuario = 0;
+      let usuario = 'Sistema';
+      let permiso = 'admin';
+      try {
+        // Si tienes acceso a UserStore en el backend, úsalo aquí
+        if (req.user && req.user.id) {
+          id_usuario = req.user.id;
+          usuario = req.user.usuario || 'Sistema';
+          permiso = req.user.permiso || 'admin';
+        } else if (req.body && req.body.idUser) {
+          id_usuario = req.body.idUser !== 'Null' ? req.body.idUser : 0;
+          usuario = req.body.User || 'Sistema';
+          permiso = req.body.Rol || 'admin';
+        }
+        await fetch('/api/activity_log', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            accion: 'Eliminar Venta',
+            detalle: `Venta con folio ${folio} eliminada`,
+            id_usuario,
+            usuario,
+            permiso
+          })
+        });
+      } catch (logErr) {
+        console.error('Error al registrar en el Activity Log:', logErr);
+      }
+
       await connection.commit();
 
       res.json({
         success: true,
-        mensaje: 'Venta eliminada correctamente',
-        registrosEliminados: ventaRecords.length
+        mensaje: 'Venta eliminada correctamente'
       });
 
     } catch (err) {

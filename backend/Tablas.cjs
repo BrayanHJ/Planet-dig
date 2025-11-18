@@ -16,7 +16,7 @@ router.get('/InicioSecion', async (req, res) => {
 // Obtener registros de usuarios
 router.get('/RegistrosUser', async (req, res) => {
   try {
-    const [results] = await db.execute('SELECT * FROM registro_usuarios');
+    const [results] = await db.execute('SELECT * FROM registro_usuarios ORDER BY fecha DESC');
     res.json({ success: true, registros: results });
   } catch (err) {
     console.error('Tablas.RegistrosUser error:', err);

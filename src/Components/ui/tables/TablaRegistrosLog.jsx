@@ -62,7 +62,6 @@ function TablaRegistrosLog() {
                 toast.success('Log eliminado correctamente');
                 setModalOpen(false);
                 setSelectedLogId(null);
-                // Recargar la lista de logs
                 cargarLogs();
             } else {
                 toast.error(data.mensaje || 'No se pudo eliminar el log');
@@ -150,7 +149,7 @@ function TablaRegistrosLog() {
             <div className="shadow-md rounded-lg p-4">
                 <section className="flex items-center gap-2 justify-center flex-col mb-5">
                     <h2 className="text-3xl font-semibold text-white mb-4 text-center">Registro de Actividades</h2>
-                    <Icon icon="line-md:history" width="35" height="35" style={{ color: '#fff' }} />
+                    <Icon icon="fa-solid:user-shield" className='text-4xl' style={{ color: '#fff' }} />
                 </section>
 
                 <div className="flex justify-between items-center mb-4">
@@ -185,6 +184,7 @@ function TablaRegistrosLog() {
                                         responsive: true,
                                         pagingType: 'simple_numbers',
                                         pageLength: 25,
+                                        order: [[0, 'desc']], // Ordena por la primera columna (ID) descendente
                                         language: {
                                             search: '🔎 Buscar :',
                                             lengthMenu: 'Mostrar _MENU_ entradas',

@@ -13,6 +13,7 @@ import { useModalStore } from '../../../Store/ModalStore';
 import BtnExport from '../Buttons/BtnExport';
 import { Modal } from '../Ventanas/Modal.jsx';
 import { toast , Toaster } from 'sonner';
+import { AnimatePresence, motion } from 'framer-motion';
 
 function TablaUsuarios() {
   const usuarios = useTablesStore((s) => s.usuarios);
@@ -109,7 +110,7 @@ function TablaUsuarios() {
                         value="${id}" 
                         onchange="window.handleSelectChange(this.value)"
                         ${selectedIds.includes(id) ? 'checked' : ''}
-                        class="h-4 w-4 text-blue-600 bg-gray-800 border-gray-600 focus:ring-blue-600 cursor-pointer"
+                        class="custom-radio"
                     />
                 </div>`;
           }
@@ -140,7 +141,7 @@ function TablaUsuarios() {
       <div className="shadow-md rounded-lg p-4">
         <section className="flex items-center gap-2 justify-center flex-col">
           <h2 className="text-3xl font-semibold text-white mb-4 text-center"> Lista de Usuarios  </h2>
-          <Icon icon="line-md:account" width="35" height="35"  style={{color:' #fff'}} />
+          <Icon icon="mingcute:happy-fill" className='text-5xl' />
         </section>
 
           <BtnExport
@@ -155,9 +156,27 @@ function TablaUsuarios() {
           <br />
           <div className="flex items-center mb-4">
             <div className="flex items-center bg-gray-300 dark:bg-gray-800 px-3 py-1 rounded mr-4 select-none">
-                <Icon icon="line-md:confirm-circle" width="20" height="20" className="mr-2" style={{color: selectedIds.length > 0 ? '#22c55e' : '#6666'}} />
+                <Icon icon="line-md:confirm-circle" width="20" height="20" className="mr-2" style={{color: selectedIds.length > 0 ? '#22c55e' : '#666'}} />
                 <span className="text-black dark:text-white">
-                    {selectedIds.length > 0 ? `ID seleccionado: ${selectedIds[0]}` : 'Ningún registro seleccionado'}
+                  <AnimatePresence mode="wait">
+                    {selectedIds.length > 0 ? (
+                      <>
+                        ID seleccionado:
+                        <AnimatePresence mode="wait">
+                          <motion.span
+                            key={selectedIds[0]}
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.3 }}
+                            style={{ display: 'inline-block', marginLeft: 4 }}
+                          >
+                            {selectedIds[0]}
+                          </motion.span>
+                        </AnimatePresence>
+                      </>
+                    ) : 'Ningún registro seleccionado'}
+                  </AnimatePresence>
                 </span>
             </div>
             <button

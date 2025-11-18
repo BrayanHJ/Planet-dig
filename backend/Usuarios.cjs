@@ -6,7 +6,7 @@ const db = require('./db.cjs');
 router.get('/', async (req, res) => {
     try {
         const [results] = await db.execute(
-        'SELECT id_usuarios AS id, usuario, nombre, Rol, fecha_creacion FROM usuarios;'
+        'SELECT id_usuarios AS id, usuario, nombre, Rol, fecha_creacion FROM usuarios ORDER BY fecha_creacion DESC;'
         );
         res.json({ success: true, usuarios: results });
     } catch (err) {

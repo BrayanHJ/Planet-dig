@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import React, { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-dt';
@@ -13,7 +13,8 @@ import { useModalStore } from '../../../Store/ModalStore';
 import { useLogStore } from '../../../Store/LogStore';
 import BtnExport from '../Buttons/BtnExport';
 import { Modal } from '../Ventanas/Modal.jsx';
-import { toast , Toaster } from 'sonner';
+import { Toast } from 'primereact/toast';
+import {motion , AnimatePresence} from 'framer-motion';
 
     function TablaRegistrosUser() {
     const registrosUser = useTablesStore((s) => s.registrosUser);
@@ -26,7 +27,7 @@ import { toast , Toaster } from 'sonner';
     const [modalAction, setModalAction] = useState(null); // 'edit' | 'delete'
 
     const {setTipoSelect} = useModalStore();
-
+    const toastRef = useRef(null);
 
     const handleEdit = useCallback((id) => {
         // Open edit modal for single id
@@ -50,12 +51,28 @@ import { toast , Toaster } from 'sonner';
                 console.warn('Failed to send delete registro log', logErr);
             }
             cargarRegistrosUser(); // recargar lista
+            toastRef.current.show({
+                severity: 'success',
+                summary: 'Eliminado',
+                detail: 'Usuario eliminado correctamente',
+                life: 3000
+            });
             } else {
-            toast.error(data.mensaje || 'Error al eliminar usuario');
+            toastRef.current.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: data.mensaje || 'Error al eliminar usuario',
+                life: 3000
+            });
             }
         } catch (err) {
             console.error('Error:', err);
-            toast.error('Error al intentar eliminar el usuario');
+            toastRef.current.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Error al intentar eliminar el usuario',
+                life: 3000
+            });
         }
         }
     }, [cargarRegistrosUser]);
@@ -90,7 +107,7 @@ import { toast , Toaster } from 'sonner';
                         value="${id}" 
                         onchange="window.handleSelectChange(this.value)"
                         ${selectedIds.includes(id) ? 'checked' : ''}
-                        class=" h-4 w-4 text-blue-600 bg-gray-800 border-gray-600 focus:ring-blue-600  cursor-pointer"
+                        class="custom-radio"
                     />
                 </div>`;
             }
@@ -136,7 +153,7 @@ import { toast , Toaster } from 'sonner';
         <div className="shadow-md rounded-lg p-4 ">
             <section className="flex items-center gap-2 justify-center flex-col mb-5">
                 <h2 className="text-3xl font-semibold text-white mb-4 text-center"> Registro de Usuarios </h2>
-                <Icon icon="line-md:account" width="35" height="35"  style={{color:' #fff'}} />
+                <Icon icon="clarity:assign-user-solid" className='text-5xl' style={{color:' #fff'}} />
             </section>
 
             <BtnExport
@@ -153,7 +170,25 @@ import { toast , Toaster } from 'sonner';
                 <div className="flex items-center bg-gray-300 dark:bg-gray-800 px-3 py-1 rounded mr-4 select-none">
                     <Icon icon="line-md:confirm-circle" width="20" height="20" className="mr-2" style={{color: selectedIds.length > 0 ? '#22c55e' : '#666'}} />
                     <span className="text-black dark:text-white">
-                        {selectedIds.length > 0 ? `ID seleccionado: ${selectedIds[0]}` : 'Ningún registro seleccionado'}
+                        <AnimatePresence mode="wait">
+                            {selectedIds.length > 0 ? (
+                                <>
+                                    ID seleccionado: 
+                                    <AnimatePresence mode="wait">
+                                        <motion.span
+                                            key={selectedIds[0]}
+                                            initial={{ opacity: 0, y: -10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 10 }}
+                                            transition={{ duration: 0.3 }}
+                                            style={{ display: 'inline-block', marginLeft: 4 }}
+                                        >
+                                            {selectedIds[0]}
+                                        </motion.span>
+                                    </AnimatePresence>
+                                </>
+                            ) : 'Ningún registro seleccionado'}
+                        </AnimatePresence>
                     </span>
                 </div>
                 <button
@@ -164,13 +199,19 @@ import { toast , Toaster } from 'sonner';
                     setTipoSelect('Registro Usuario');
                     setIsModalOpen(true);
                     } else {
-                    toast.error('Por favor, seleccione un registro para eliminar');
+                    toastRef.current.show({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Por favor, seleccione un registro para eliminar',
+                        life: 3000
+                    });
                     }
                 }}
                 >
                 <Icon icon="line-md:account-delete" width="24" height="24"  style={{color: '#fff'}} />
                 </button>
             </div>
+            <Toast ref={toastRef} position="top-center" className='select-none cursor-pointer scale-70 '/>
 
             <div className="overflow-x-auto">
             {loading ? (
@@ -195,6 +236,7 @@ import { toast , Toaster } from 'sonner';
             ) : (
                 <div className="text-white">No hay usuarios para mostrar.</div>
             )}
+
             </div>
         </div>
         {isModalOpen && (
@@ -204,10 +246,7 @@ import { toast , Toaster } from 'sonner';
             userId={selectedIds[0]}
             />
         )}
-        {!isModalOpen && (
-            <Toaster className='select-none cursor-pointer' />
-        )}
-        </div>
+    </div>
     );
     }
 

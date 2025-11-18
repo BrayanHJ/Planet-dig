@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import { Toast } from 'primereact/toast';
+import React, { useRef, useEffect, useMemo, useState, useCallback } from 'react';
 import { Icon } from '@iconify/react';
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-dt';
@@ -26,6 +27,7 @@ function TablaBoletos() {
   const [modalAction, setModalAction] = useState(null); // 'edit' | 'delete'
 
   const {setTipoSelect} = useModalStore();
+  const toastRef = useRef(null);
 
   // local UI state for filtering and sale detail modal
   const [filterMode, setFilterMode] = useState('all'); // 'all' | 'today'
@@ -41,10 +43,14 @@ function TablaBoletos() {
     setIsModalOpen(true);
   }, []);
 
+  // Ejemplo de uso en alguna función:
   const handleDelete = useCallback(async () => {
-    // Eliminación de registros de ventas no implementada aquí.
-    // Si tu API soporta borrar registros, reemplaza la ruta y llama a `cargarRegistrosVentas()`.
-    toast.error('Eliminación de registros no disponible desde esta tabla');
+    toastRef.current.show({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Por favor, seleccione un registro para eliminar',
+      life: 3000
+    });
   }, []);
 
   useEffect(() => {
@@ -105,102 +111,62 @@ function TablaBoletos() {
 
     const columns = useMemo(() => {
   if (!registros || registros.length === 0) return [{ title: 'Registros' }];
-  const keys = Object.keys(registros[0]);
-    // detect id-like key
-    const idKey = keys.find((k) => /(^id$|\bid\b|_id$|^id_|id_user|idReg|id_registro_user|iduser)/i.test(k)) || keys[0];
-    // detect common columns
-    const fechaKey = keys.find((k) => /fecha|date|created_at/i.test(k));
-    const totalKey = keys.find((k) => /total|monto|amount/i.test(k));
-    const folioKey = keys.find((k) => /folio/i.test(k));
-
-    // build ordered keys: fecha, total, folio, then the rest (excluding id)
-    const remaining = keys.filter((k) => k !== idKey && k !== fechaKey && k !== totalKey && k !== folioKey);
-    const orderedKeys = [fechaKey, totalKey, folioKey].filter(Boolean).concat(remaining);
-
-    const idLabel = idKey.charAt(0).toUpperCase() + idKey.slice(1);
-
-    // selection + id columns first
-    const cols = [
-      {
-        title: '',
-        orderable: false,
-        searchable: false,
-        render: (data, type, row) => {
-          const id = String(row[1] ?? '');
-          return `
-              <div class="flex items-center justify-center">
-                  <input 
-                      type="radio" 
-                      name="selectedRow" 
-                      value="${id}" 
-                      onchange="window.handleSelectChange(this.value)"
-                      ${selectedIds.includes(id) ? 'checked' : ''}
-                      class="h-4 w-4 text-blue-600 bg-gray-800 border-gray-600 focus:ring-blue-600 cursor-pointer"
-                  />
-              </div>`;
-        }
-      },
-      { title: idLabel },
-    ];
-
-    // add ordered data columns
-    orderedKeys.forEach((k) => {
-      cols.push({ title: k.charAt(0).toUpperCase() + k.slice(1) });
-    });
-
-    // actions column (Ver Venta)
-    cols.push({ title: 'Ver Ventas', orderable: false, searchable: false, render: (data, type, row) => {
-      // the folio value will be included as the last element in the data array
-      const folio = String(row[row.length - 1] ?? '');
-      // escape single quotes
+  // Solo mostrar las columnas id, folio_venta, total, fecha
+  const cols = [
+    { title: 'ID' },
+    { title: 'Folio Venta' },
+    { title: 'Total' },
+    { title: 'Fecha', render: (data) => {
+      // Formatea la fecha si existe
+      if (!data) return '';
+      const date = new Date(data);
+      return isNaN(date.getTime()) ? String(data) : date.toLocaleString();
+    }},
+    { title: 'Ver Ventas', orderable: false, searchable: false, render: (data, type, row) => {
+      const folio = String(row[1] ?? '');
       const safe = folio.replace(/'/g, "\\'");
       return `
         <div class="flex items-center gap-2 justify-center">
           <button onclick="window.viewVenta('${safe}')" class="cursor-pointer px-2 py-1 rounded bg-blue-600 text-white text-sm">Mas Detalles</button>
         </div>`;
-    }});
-
-    return cols;
-  }, [registros, selectedIds]);
+    }}
+  ];
+  return cols;
+}, [registros]);
 
   // filtered records according to filterMode
   const displayedRecords = useMemo(() => {
     if (!registros) return [];
+    // Ordenar por fecha descendente (más reciente primero)
+    const sorted = [...registros].sort((a, b) => {
+      const kA = Object.keys(a).find(k => /fecha|date|created_at/i.test(k));
+      const kB = Object.keys(b).find(k => /fecha|date|created_at/i.test(k));
+      const dA = kA ? new Date(a[kA]) : new Date(0);
+      const dB = kB ? new Date(b[kB]) : new Date(0);
+      return dB - dA;
+    });
     if (filterMode === 'today') {
       const today = new Date().toDateString();
-      return registros.filter(r => {
+      return sorted.filter(r => {
         const k = Object.keys(r).find(k => /fecha|date|created_at/i.test(k));
         if (!k) return false;
         const d = new Date(r[k]);
         return d.toDateString() === today;
       });
     }
-    return registros;
+    return sorted;
   }, [registros, filterMode]);
 
   const data = useMemo(() => {
     if (!displayedRecords || displayedRecords.length === 0) return [];
-    const keys = Object.keys(displayedRecords[0]);
-    const idKey = keys.find((k) => /(^id$|\bid\b|_id$|^id_|id_user|idReg|id_registro_user|iduser)/i.test(k)) || keys[0];
-    const fechaKey = keys.find((k) => /fecha|date|created_at/i.test(k));
-    const totalKey = keys.find((k) => /total|monto|amount/i.test(k));
-    const folioKey = keys.find((k) => /folio/i.test(k));
-
-    const remaining = keys.filter((k) => k !== idKey && k !== fechaKey && k !== totalKey && k !== folioKey);
-    const orderedKeys = [fechaKey, totalKey, folioKey].filter(Boolean).concat(remaining);
-
-    return displayedRecords.map((u) => {
-      const row = [];
-      row.push('');
-      row.push(String(u[idKey] ?? ''));
-      orderedKeys.forEach(k => {
-        const v = u[k];
-        row.push(v === null || v === undefined ? '' : String(v));
-      });
-      // append folio raw as last element for actions renderer to read
-      row.push(String(u[folioKey] ?? ''));
-      return row;
-    });
+    // Solo mostrar id, folio_venta, total, fecha
+    return displayedRecords.map((u) => [
+      String(u.id ?? ''),
+      String(u.folio_venta ?? ''),
+      String(u.total ?? ''),
+      String(u.fecha ?? ''),
+      '' // columna para el botón de detalles
+    ]);
   }, [displayedRecords]);
 
   // compute total sum of displayed records
@@ -219,10 +185,11 @@ function TablaBoletos() {
 
   return (
     <div className="p-6 min-h-screen">
+      <Toast ref={toastRef} />
       <div className="shadow-md rounded-lg p-4">
         <section className="flex items-center gap-2 justify-center flex-col">
           <h2 className="text-3xl font-semibold text-white mb-4 text-center"> Venta de Boletos </h2>
-          <Icon icon="mdi:local-activity" width="35" height="35"  style={{color:' #fff'}} />
+          <Icon icon="mdi:local-activity" className='text-5xl' style={{color:' #fff'}} />
         </section>
 
           <BtnExport
@@ -239,28 +206,6 @@ function TablaBoletos() {
           <div className="flex items-center justify-between mb-4">
 
             <section className="flex items-center">
-
-              <div className="flex items-center bg-gray-300 dark:bg-gray-800 px-3 py-1 rounded mr-4 select-none">
-                  <Icon icon="line-md:confirm-circle" width="20" height="20" className="mr-2" style={{color: selectedIds.length > 0 ? '#22c55e' : '#6666'}} />
-                  <span className="text-black dark:text-white">
-                      {selectedIds.length > 0 ? `ID seleccionado: ${selectedIds[0]}` : 'Ningún registro seleccionado'}
-                  </span>
-              </div>
-
-              <button
-                className="hover:bg-red-600 bg-red-800 transition-all duration-300 text-white px-3 py-1 rounded text-sm mr-2 cursor-pointer"
-                onClick={() => {
-                  if (selectedIds.length > 0) {
-                    setModalAction('delete');
-                    setTipoSelect('usuario');
-                    setIsModalOpen(true);
-                  } else {
-                    toast.error('Por favor, seleccione un Registro para Eliminar.');
-                  }
-                }}
-              >
-                <Icon icon="line-md:document-delete-twotone" width="24" height="24"  style={{color: '#fff'}} />
-              </button>
 
             </section>
 

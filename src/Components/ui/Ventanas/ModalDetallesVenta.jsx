@@ -1,6 +1,7 @@
 import { motion , AnimatePresence } from 'framer-motion';
 import React from 'react';
 import { toast } from 'sonner';
+import { UserStore } from '../../../Store/UserStore';
 
 export const ModalDetallesVenta = ({ isOpen, onClose, loading, error, data }) => {
   const [showDetails, setShowDetails] = React.useState(false);
@@ -59,8 +60,16 @@ export const ModalDetallesVenta = ({ isOpen, onClose, loading, error, data }) =>
 
     setDeleting(true);
     try {
+      // Obtener usuario y rol del store
+      const { idUser, User, Rol } = UserStore.getState();
       const response = await fetch(`/api/boletos/Registros/${encodeURIComponent(folio_venta)}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          idUser: idUser !== 'Null' ? idUser : 0,
+          User: User || 'Sistema',
+          Rol: Rol || 'admin'
+        })
       });
       const result = await response.json();
 
