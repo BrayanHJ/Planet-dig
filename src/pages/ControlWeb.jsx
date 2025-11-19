@@ -4,6 +4,7 @@ import { Modalimagenes } from "../Components/ui/Ventanas/Modalimagenes";
 import { toast , Toaster } from "sonner";
 import {Icon} from '@iconify/react';
 import { motion , AnimatePresence } from "framer-motion";
+import AnimatedPage from "../Components/Animations/AnimatedPage";
 
 import {imagenWebStore} from '../Store/imagenWebStore.jsx';
 
@@ -119,102 +120,104 @@ const handleEdit = (slide, type) => {
 };
 
 return (
+    <AnimatedPage>
         <main>
-          <h1 className="text-3xl font-bold text-center">
-              Página Web <br /> Planetario Digital Chimalhuacán
-          </h1>
+            <h1 className="text-3xl font-bold text-center">
+                Página Web <br /> Planetario Digital Chimalhuacán
+            </h1>
 
-          <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-transparent">
-              {error && (
-                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                      <strong className="font-bold">Error: </strong>
-                      <span className="block sm:inline">{error}</span>
-                  </div>
-              )}
+            <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-transparent">
+                {error && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong className="font-bold">Error: </strong>
+                        <span className="block sm:inline">{error}</span>
+                    </div>
+                )}
 
-              {loading ? (
-                  <div className="flex justify-center items-center h-32">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                  </div>
-              ) : (
-                  <section>
-                      <ImageCarousel 
-                          images={imgSalas} 
-                          title="Imágenes Salas"
-                          onEdit={(i) => handleEdit(imgSalas[i], 'salas')}
-                      />
-                      <ImageCarousel 
-                          images={imgFunciones} 
-                          title="Imágenes Funciones"
-                          onEdit={(i) => handleEdit(imgFunciones[i], 'funciones')}
-                      />
-                      <ImageCarousel 
-                          images={imgActividades} 
-                          title="Imágenes Actividades"
-                          onEdit={(i) => handleEdit(imgActividades[i], 'actividades')}
-                      />
-                  </section>
-              )}
-          </div>
-
-          <section className="relative inset-0 flex items-center justify-center z-70 ">
-              <motion.button className="bg-green-900 text-amber-50 rounded-full p-2 fixed bottom-8 right-8 shadow-lg hover:bg-green-700 transition-all text-4xl  cursor-pointer mb-12"
-              animate={{ rotate: rotado ? -320 : 0, 
-                        scale: rotado ? 1.5 : 1
-                      }}
-              transition={{ type: "spring", stiffness: 200, damping: 10 }}
-              onClick={() => 
-                {const next = !rotado;
-                setRotado(next);
-                setNewModalOpen(next);}
-                } 
-              >
-                  <Icon icon="line-md:plus" />
-              </motion.button>
-          </section>
-          <AnimatePresence mode="await">
-            {newModalOpen && (
-                <motion.section className="fixed bottom-4 right-20 z-50 flex"
-                initial={{  x: 500 }}
-                animate={{ x: 0 }}
-                exit={{ x: 500 }}
-                transition={{ duration: 1.5 }}
-                >
-                  <div className=" flex-col justify-center items-center p-4 border-2 bg-bg-dark border-blue-500 rounded-lg w-sm h-36 mb-6 mr-5">
-                    <h2 className="text-2xl font-bold mb-5">Agregar Nueva:</h2>
-                    <section className="flex justify-between gap-5">
-                      <select name="Nuevo" id="CrearNuevo" className="border border-gray-300 rounded-md p-2 cursor-pointer bg-bg-dark w-sm">
-                        <option value="Sala">Sala</option>
-                        <option value="Funcion">Funcion</option>
-                        <option value="Actividad">Actividad</option>
-                      </select>
-                      <button className="bg-blue-500 w-sm text-white rounded-md cursor-pointer"
-                      onClick={() => {
-                        const tipo = document.getElementById('CrearNuevo').value.toLowerCase();
-                        setCurrentData({
-                          operacion: 'nuevo',
-                          type: tipo
-                        });
-                        setModalOpen(true);
-                        setRotado(false);
-                        setNewModalOpen(false);
-                      }}
-                      >
-                        Aceptar
-                      </button>
+                {loading ? (
+                    <div className="flex justify-center items-center h-32">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                    </div>
+                ) : (
+                    <section>
+                        <ImageCarousel 
+                            images={imgSalas} 
+                            title="Imágenes Salas"
+                            onEdit={(i) => handleEdit(imgSalas[i], 'salas')}
+                        />
+                        <ImageCarousel 
+                            images={imgFunciones} 
+                            title="Imágenes Funciones"
+                            onEdit={(i) => handleEdit(imgFunciones[i], 'funciones')}
+                        />
+                        <ImageCarousel 
+                            images={imgActividades} 
+                            title="Imágenes Actividades"
+                            onEdit={(i) => handleEdit(imgActividades[i], 'actividades')}
+                        />
                     </section>
-                  </div>
-                </motion.section>
-            )}
-          </AnimatePresence>
+                )}
+            </div>
 
-          <Modalimagenes 
-              isOpen={modalOpen}
-              onClose={() => setModalOpen(false)}
-              data={currentData}
-              onUpdate={recargarDatos}
-          />
-          <Toaster/>
-    </main>
+            <section className="relative inset-0 flex items-center justify-center z-70 ">
+                <motion.button className="bg-green-900 text-amber-50 rounded-full p-2 fixed bottom-8 right-8 shadow-lg hover:bg-green-700 transition-all text-4xl  cursor-pointer mb-12"
+                animate={{ rotate: rotado ? -320 : 0, 
+                            scale: rotado ? 1.5 : 1
+                        }}
+                transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                onClick={() => 
+                    {const next = !rotado;
+                    setRotado(next);
+                    setNewModalOpen(next);}
+                    } 
+                >
+                    <Icon icon="line-md:plus" />
+                </motion.button>
+            </section>
+            <AnimatePresence mode="await">
+                {newModalOpen && (
+                    <motion.section className="fixed bottom-4 right-20 z-50 flex"
+                    initial={{  x: 500 }}
+                    animate={{ x: 0 }}
+                    exit={{ x: 500 }}
+                    transition={{ duration: 1.5 }}
+                    >
+                    <div className=" flex-col justify-center items-center p-4 border-2 bg-bg-dark border-blue-500 rounded-lg w-sm h-36 mb-6 mr-5">
+                        <h2 className="text-2xl font-bold mb-5">Agregar Nueva:</h2>
+                        <section className="flex justify-between gap-5">
+                        <select name="Nuevo" id="CrearNuevo" className="border border-gray-300 rounded-md p-2 cursor-pointer bg-bg-dark w-sm">
+                            <option value="Sala">Sala</option>
+                            <option value="Funcion">Funcion</option>
+                            <option value="Actividad">Actividad</option>
+                        </select>
+                        <button className="bg-blue-500 w-sm text-white rounded-md cursor-pointer"
+                        onClick={() => {
+                            const tipo = document.getElementById('CrearNuevo').value.toLowerCase();
+                            setCurrentData({
+                            operacion: 'nuevo',
+                            type: tipo
+                            });
+                            setModalOpen(true);
+                            setRotado(false);
+                            setNewModalOpen(false);
+                        }}
+                        >
+                            Aceptar
+                        </button>
+                        </section>
+                    </div>
+                    </motion.section>
+                )}
+            </AnimatePresence>
+
+            <Modalimagenes 
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+                data={currentData}
+                onUpdate={recargarDatos}
+            />
+            <Toaster/>
+        </main>
+    </AnimatedPage>
     );
 };

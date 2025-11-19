@@ -1,10 +1,13 @@
 import ViewsDemo from "../Components/ui/Graphics/ViewsDemo";
+import AnimatedPage from "../Components/Animations/AnimatedPage";
 
 export const Graficas = () => {
     return (
-        <div>
-            <h1>Graficas</h1>
-            <ViewsDemo />
-        </div>
+        <AnimatedPage>
+            <main>
+                <h1>Graficas</h1>
+                <ViewsDemo />
+            </main>
+        </AnimatedPage>
     );
 }

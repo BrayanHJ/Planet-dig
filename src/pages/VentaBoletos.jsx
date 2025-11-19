@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { ModalVenta } from "../Components/ui/Ventanas/ModalVenta";
 import { ModalVentaBoletos } from "../Components/ui/Ventanas/ModalVentaBoletos";
 import { BoletosStore } from '../Store/BoletosStore.jsx';
-import { toast , Toaster } from 'sonner';
+import { showToast } from "../Components/ui/toastService.jsx";
+import { Toaster } from "sonner";
+import AnimatedPage from "../Components/Animations/AnimatedPage";
 
 export const VentaBoletos = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -53,107 +55,109 @@ export const VentaBoletos = () => {
             if (res.ok) {
                 clearSeleccionados();
                 setOpenConfirmModal(false);
-                toast.success(
-                    <div>
-                        <p>Venta registrada correctamente</p>
-                        <p className="font-bold">Folio: {data.folio_venta}</p>
-                    </div>
-                );
+                showToast({
+                    severity: 'success',
+                    summary: 'Éxito',
+                    detail: (
+                        <div>
+                            <p>Venta registrada correctamente</p>
+                            <p className="font-bold">Folio: {data.folio_venta}</p>
+                        </div>
+                    )
+                });
                 return;
             }
-            toast.error(data?.mensaje || `Error al registrar la venta (status ${res.status})`);
+            showToast({ severity: 'error', summary: 'Error', detail: data?.mensaje || `Error al registrar la venta (status ${res.status})` });
         } catch (err) {
             console.error(err);
-            toast.error('Error al enviar la selección: ' + (err?.message || String(err)));
+            showToast({ severity: 'error', summary: 'Error', detail: 'Error al enviar la selección: ' + (err?.message || String(err)) });
         }
     };
 
     return (
-        <main className="dark:bg-bg-dark max-w-[1200px] mx-auto flex flex-col gap-4 p-4 h-full   items-center justify-center">
-            <div className="flex flex-col justify-center items-center  bg-black/50 text-white rounded-3xl p-6 w-full ">
-                <section className="mt-6 w-full ">
-                    {(!seleccionados || seleccionados.length === 0) ? (
-                        <div>
-                            <h1 className="text-7xl justify-center text-center mb-15">Venta de Boletos</h1>
-                            <p className="text-gray-600">No hay boletos seleccionados</p>
-                        </div>
-                    ) : (
-                        <div className="space-y-2">
-                            <h1 className="justify-center text-center mb-8 text-5xl">Boletos</h1>
-                            {seleccionados.map(item => {
-                                const meta = (Boletos || []).find(b => b.id_boleto === item.id_boleto) || {};
-                                return (
-                                    <div key={item.id_boleto} className="flex items-center justify-between p-3 border rounded">
-                                        <section className="flex items-center justify-between w-9/12">
-                                            <div className="flex gap-2 justify-center items-center">
-                                                <div className='flex gap-2 transition-all duration-300'>
-                                                    <button onClick={() => updateCantidad(item.id_boleto, -1)} className="px-3 py-1 bg-green-800 rounded cursor-pointer hover:bg-green-600 hover:scale-120">-</button>
-                                                    <button onClick={() => updateCantidad(item.id_boleto, +1)} className="px-3 py-1 bg-green-800 rounded cursor-pointer hover:bg-green-600 hover:scale-120">+</button>
+        <main className="dark:bg-bg-dark flex flex-col gap-4 p-4 h-full items-center justify-center">
+                <div className="flex flex-col justify-center items-center  bg-black/50 text-white rounded-3xl p-6 w-full">
+                    <section className="mt-6 w-full ">
+                        {(!seleccionados || seleccionados.length === 0) ? (
+                            <div>
+                                <h1 className="text-7xl justify-center text-center mb-15">Venta de Boletos</h1>
+                                <p className="text-gray-600">No hay boletos seleccionados</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-2">
+                                <h1 className="justify-center text-center mb-8 text-5xl">Boletos</h1>
+                                {seleccionados.map(item => {
+                                    const meta = (Boletos || []).find(b => b.id_boleto === item.id_boleto) || {};
+                                    return (
+                                        <div key={item.id_boleto} className="flex items-center justify-between p-3 border rounded">
+                                            <section className="flex items-center justify-between w-9/12">
+                                                <div className="flex gap-2 justify-center items-center">
+                                                    <div className='flex gap-2 transition-all duration-300'>
+                                                        <button onClick={() => updateCantidad(item.id_boleto, -1)} className="px-3 py-1 bg-green-800 rounded cursor-pointer hover:bg-green-600 hover:scale-120">-</button>
+                                                        <button onClick={() => updateCantidad(item.id_boleto, +1)} className="px-3 py-1 bg-green-800 rounded cursor-pointer hover:bg-green-600 hover:scale-120">+</button>
+                                                    </div>
+                                                    <p className="text-sm text-gray-600">Cantidad: {item.cantidad}</p>
+                                                    {item.folios && item.folios.length > 0 && (
+                                                        <p className="text-sm text-gray-500">Folios: {item.folios.join(', ')}</p>
+                                                    )}
                                                 </div>
-                                                <p className="text-sm text-gray-600">Cantidad: {item.cantidad}</p>
-                                                {item.folios && item.folios.length > 0 && (
-                                                    <p className="text-sm text-gray-500">Folios: {item.folios.join(', ')}</p>
-                                                )}
+                                            </section>
+                                            <div className="text-right flex flex-row items-end gap-10">
+                                                <p className="font-semibold ml-3 flex justify-center items-center text-center">{item.cantidad} {meta.Boleto || `#${item.id_boleto}`}</p>
+                                                <p className="font-medium">${item.total}</p>
                                             </div>
-                                        </section>
-                                        <div className="text-right flex flex-row items-end gap-10">
-                                            <p className="font-semibold ml-3 flex justify-center items-center text-center">{item.cantidad} {meta.Boleto || `#${item.id_boleto}`}</p>
-                                            <p className="font-medium">${item.total}</p>
                                         </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    )}
-                </section>
-            </div>
-
-            <div className="mx-auto flex flex-row gap-4 p-4 justify-between w-full">
-                <div className="flex gap-4 transition-all duration-500">
-                    <button
-                        className="text-2xl cursor-pointer bg-red-800 rounded-3xl font-bold px-6 py-2 hover:bg-red-500 hover:scale-120"
-                        onClick={() => {
-                            if (!seleccionados || seleccionados.length === 0) {
-                                toast.error('No hay boletos seleccionados');
-                                return;
-                            }
-                            clearSeleccionados();
-                            toast.success('Selección cancelada');
-                        }}
-                    >
-                        Cancelar
-                    </button>
-                    <button className="text-2xl cursor-pointer bg-purple-500 rounded-3xl font-bold px-6 py-2 hover:bg-purple-800 hover:scale-120" onClick={() => setOpenModal(true)}>Agregar</button>
-                    <button 
-                        className="text-2xl cursor-pointer bg-blue-500 rounded-3xl font-bold px-6 py-2 hover:bg-blue-800 hover:scale-120" 
-                        onClick={() => {
-                            if (!seleccionados || seleccionados.length === 0) {
-                                toast.error('No hay boletos seleccionados');
-                                return;
-                            }
-                            handleOpenConfirm();
-                        }}
-                    >
-                        Aceptar
-                    </button>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </section>
                 </div>
-                <section className="justify-center items-center text-center">
-                    <h2 className="text-3xl">Total</h2>
-                    <p className="text-2xl">${seleccionados && seleccionados.reduce((s, i) => s + (i.total || 0), 0)}</p>
-                </section>
-            </div>
-            {openModal && (
-                <ModalVenta onClose={() => setOpenModal(false)} onConfirm={() => setOpenModal(false)} />
-            )}
 
-            {openConfirmModal && (
-                <ModalVentaBoletos 
-                    onClose={() => setOpenConfirmModal(false)}
-                    onConfirm={sendSeleccionados}
-                />
-            )}
+                <div className="mx-auto flex flex-row gap-4 p-4 justify-between w-full">
+                    <div className="flex gap-4 transition-all duration-500">
+                        <button
+                            className="text-2xl cursor-pointer bg-red-800 rounded-3xl font-bold px-6 py-2 hover:bg-red-500 hover:scale-120"
+                            onClick={() => {
+                                if (!seleccionados || seleccionados.length === 0) {
+                                    showToast({ severity: 'error', summary: 'Error', detail: 'No hay boletos seleccionados' });
+                                    return;
+                                }
+                                clearSeleccionados();
+                                showToast({ severity: 'success', summary: 'Éxito', detail: 'Selección cancelada' });
+                            }}
+                        >
+                            Cancelar
+                        </button>
+                        <button className="text-2xl cursor-pointer bg-purple-500 rounded-3xl font-bold px-6 py-2 hover:bg-purple-800 hover:scale-120" onClick={() => setOpenModal(true)}>Agregar</button>
+                        <button 
+                            className="text-2xl cursor-pointer bg-blue-500 rounded-3xl font-bold px-6 py-2 hover:bg-blue-800 hover:scale-120" 
+                            onClick={() => {
+                                if (!seleccionados || seleccionados.length === 0) {
+                                    showToast({ severity: 'error', summary: 'Error', detail: 'No hay boletos seleccionados' });
+                                    return;
+                                }
+                                handleOpenConfirm();
+                            }}
+                        >
+                            Aceptar
+                        </button>
+                    </div>
+                    <section className="justify-center items-center text-center">
+                        <h2 className="text-3xl">Total</h2>
+                        <p className="text-2xl">${seleccionados && seleccionados.reduce((s, i) => s + (i.total || 0), 0)}</p>
+                    </section>
+                </div>
+                {openModal && (
+                    <ModalVenta onClose={() => setOpenModal(false)} onConfirm={() => setOpenModal(false)} />
+                )}
 
-            <Toaster position="top-right" richColors />
+                {openConfirmModal && (
+                    <ModalVentaBoletos 
+                        onClose={() => setOpenConfirmModal(false)}
+                        onConfirm={sendSeleccionados}
+                    />
+                )}
         </main>
     );
 }

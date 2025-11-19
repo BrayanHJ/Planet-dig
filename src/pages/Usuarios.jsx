@@ -1,10 +1,13 @@
 import TablaUser from "../Components/ui/tables/TablaUsuarios";
 import PieChart from "../Components/ui/Graphics/PieChart";
+import AnimatedPage from "../Components/Animations/AnimatedPage";
+
 export const Usuarios = () => {
     return (
-        <div>
-            <TablaUser />
-            {/* <PieChart /> */}
-        </div>
+        <AnimatedPage>
+            <div>
+                <TablaUser />
+            </div>
+        </AnimatedPage>
     );
 }

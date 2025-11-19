@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { SideBar } from "../Components/SideBar/SideBar.jsx";
+import {motion , AnimatePresence} from 'framer-motion'
 
 export const MainLayouts = () => {
     return (

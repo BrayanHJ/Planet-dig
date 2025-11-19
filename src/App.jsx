@@ -6,7 +6,7 @@ import { UseThemStore } from './store/ThemStore.jsx'
 import 'primereact/resources/themes/saga-blue/theme.css'; 
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-
+import { Toaster } from "sonner";
 
 function App() {
   const queryClient = new QueryClient();
@@ -15,6 +15,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <MyRouter />
+      <Toaster position="top-right" />
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
