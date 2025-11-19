@@ -1,7 +1,8 @@
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { MyRouter } from './Routes/Router.jsx'
+import { BrowserRouter } from "react-router-dom";
+import { MyRouter } from "./Routes/Router.jsx";
 import { UseThemStore } from './store/ThemStore.jsx'
 import 'primereact/resources/themes/saga-blue/theme.css'; 
 import 'primereact/resources/primereact.min.css';
@@ -14,7 +15,9 @@ function App() {
   document.documentElement.classList.toggle("dark", theme === "dark");
   return (
     <QueryClientProvider client={queryClient}>
-      <MyRouter />
+      <BrowserRouter>
+        <MyRouter />
+      </BrowserRouter>
       <Toaster position="top-right" />
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>

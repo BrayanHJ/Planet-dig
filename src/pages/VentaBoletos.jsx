@@ -3,8 +3,6 @@ import { ModalVenta } from "../Components/ui/Ventanas/ModalVenta";
 import { ModalVentaBoletos } from "../Components/ui/Ventanas/ModalVentaBoletos";
 import { BoletosStore } from '../Store/BoletosStore.jsx';
 import { showToast } from "../Components/ui/toastService.jsx";
-import { Toaster } from "sonner";
-import AnimatedPage from "../Components/Animations/AnimatedPage";
 
 export const VentaBoletos = () => {
     const [openModal, setOpenModal] = useState(false);
