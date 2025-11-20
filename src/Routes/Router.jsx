@@ -4,7 +4,7 @@ import { MainLayouts } from './../layouts/MainLayouts.jsx'
 import { HomePage } from './../pages/HomePage.jsx'
 import { Page404 } from "../pages/Page404.jsx";
 import { Inicio } from "../pages/Inicio.jsx"; 
-import { VentaBoletos } from "../pages/VentaBoletos.jsx";
+import { Venta } from "../pages/Venta.jsx";
 import {Datos} from "../pages/Datos.jsx";
 import {ControlWeb} from "../pages/ControlWeb.jsx";
 import {Graficas} from "../pages/Graficas.jsx";
@@ -24,7 +24,7 @@ export function MyRouter() {
                 <Route path="/PlanetarioDigital" element={<Navigate to="/external-site/Pagina-Web/index.html" replace />}/>
                 <Route path="/Panel" element={<MainLayouts />}>
                     <Route index element={<HomePage />} />
-                    <Route path="VentaBoletos" element={<VentaBoletos />} />
+                    <Route path="VentaBoletos" element={<Venta />} />
                     <Route path="Datos" element={<Datos />} />
                     <Route path="ControlWeb" element={<ControlWeb />} />
                     <Route path="Graficas" element={<Graficas />} />

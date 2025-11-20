@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { ModalVenta } from "../Components/ui/Ventanas/ModalVenta";
-import { ModalVentaBoletos } from "../Components/ui/Ventanas/ModalVentaBoletos";
-import { BoletosStore } from '../Store/BoletosStore.jsx';
-import { showToast } from "../Components/ui/toastService.jsx";
-import { Toaster } from "sonner";
-import AnimatedPage from "../Components/Animations/AnimatedPage";
+import { ModalVenta } from "../Ventanas/ModalVenta.jsx";
+import { ModalVentaBoletos } from "../Ventanas/ModalVentaBoletos.jsx";
+import { BoletosStore } from '../../../Store/BoletosStore.jsx';
+import { showToast } from "../toastService.jsx";
 
 export const VentaBoletos = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -75,7 +73,7 @@ export const VentaBoletos = () => {
     };
 
     return (
-        <main className="dark:bg-bg-dark flex flex-col gap-4 p-4 h-full items-center justify-center">
+        <main className="dark:bg-bg-dark flex flex-col gap-4 p-4 h-full w-full items-center justify-center">
                 <div className="flex flex-col justify-center items-center  bg-black/50 text-white rounded-3xl p-6 w-full">
                     <section className="mt-6 w-full ">
                         {(!seleccionados || seleccionados.length === 0) ? (
