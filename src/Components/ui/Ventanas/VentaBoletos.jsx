@@ -3,6 +3,7 @@ import { ModalVenta } from "../Ventanas/ModalVenta.jsx";
 import { ModalVentaBoletos } from "../Ventanas/ModalVentaBoletos.jsx";
 import { BoletosStore } from '../../../Store/BoletosStore.jsx';
 import { showToast } from "../toastService.jsx";
+import { motion , AnimatePresence} from 'framer-motion';
 
 export const VentaBoletos = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -73,17 +74,36 @@ export const VentaBoletos = () => {
     };
 
     return (
-        <main className="dark:bg-bg-dark flex flex-col gap-4 p-4 h-full w-full items-center justify-center">
+        <main className="dark:bg-bg-dark flex flex-col gap-4 p-4 h-full w-full items-center justify-center select-none"
+            initial={{ opacity: 0, y: 800, scale: 0.3 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 800, scale: 0.3 }}
+            transition={{ duration: 1.6 }}
+        >
                 <div className="flex flex-col justify-center items-center  bg-black/50 text-white rounded-3xl p-6 w-full">
                     <section className="mt-6 w-full ">
                         {(!seleccionados || seleccionados.length === 0) ? (
                             <div>
-                                <h1 className="text-7xl justify-center text-center mb-15">Venta de Boletos</h1>
-                                <p className="text-gray-600">No hay boletos seleccionados</p>
+                                <motion.h1 className="text-6xl font-extrabold justify-center text-center mb-15"
+                                    initial={{ opacity: 0, y: 500, scale: 0.3 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: 500, scale: 0.3 }}
+                                    transition={{ duration: 1.6 }}
+                                >
+                                    Venta de Boletos
+                                </motion.h1>
+                                <motion.p className="text-gray-600 text-2xl"
+                                    initial={{ opacity: 0, y: 400, scale: 0.3 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: 400, scale: 0.3 }}
+                                    transition={{ duration: 1.5 }}
+                                >
+                                    No hay boletos seleccionados
+                                    </motion.p>
                             </div>
                         ) : (
                             <div className="space-y-2">
-                                <h1 className="justify-center text-center mb-8 text-5xl">Boletos</h1>
+                                <h1 className="justify-center text-center mb-8 font-bold text-5xl">Boletos</h1>
                                 {seleccionados.map(item => {
                                     const meta = (Boletos || []).find(b => b.id_boleto === item.id_boleto) || {};
                                     return (
@@ -115,7 +135,7 @@ export const VentaBoletos = () => {
                 <div className="mx-auto flex flex-row gap-4 p-4 justify-between w-full">
                     <div className="flex gap-4 transition-all duration-500">
                         <button
-                            className="text-2xl cursor-pointer bg-red-800 rounded-3xl font-bold px-6 py-2 hover:bg-red-500 hover:scale-120"
+                            className="text-white text-2xl cursor-pointer bg-red-800 rounded-3xl font-bold px-6 py-2 hover:bg-red-500 hover:scale-120"
                             onClick={() => {
                                 if (!seleccionados || seleccionados.length === 0) {
                                     showToast({ severity: 'error', summary: 'Error', detail: 'No hay boletos seleccionados' });
@@ -127,9 +147,9 @@ export const VentaBoletos = () => {
                         >
                             Cancelar
                         </button>
-                        <button className="text-2xl cursor-pointer bg-purple-500 rounded-3xl font-bold px-6 py-2 hover:bg-purple-800 hover:scale-120" onClick={() => setOpenModal(true)}>Agregar</button>
+                        <button className="text-white text-2xl cursor-pointer bg-purple-500 rounded-3xl font-bold px-6 py-2 hover:bg-purple-800 hover:scale-120" onClick={() => setOpenModal(true)}>Agregar</button>
                         <button 
-                            className="text-2xl cursor-pointer bg-blue-500 rounded-3xl font-bold px-6 py-2 hover:bg-blue-800 hover:scale-120" 
+                            className="text-white text-2xl cursor-pointer bg-blue-500 rounded-3xl font-bold px-6 py-2 hover:bg-blue-800 hover:scale-120" 
                             onClick={() => {
                                 if (!seleccionados || seleccionados.length === 0) {
                                     showToast({ severity: 'error', summary: 'Error', detail: 'No hay boletos seleccionados' });
@@ -142,8 +162,19 @@ export const VentaBoletos = () => {
                         </button>
                     </div>
                     <section className="justify-center items-center text-center">
-                        <h2 className="text-3xl">Total</h2>
-                        <p className="text-2xl">${seleccionados && seleccionados.reduce((s, i) => s + (i.total || 0), 0)}</p>
+                        <h2 className="text-4xl">Total</h2>
+                        <AnimatePresence mode="wait">
+                            <motion.span
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.3 }}
+                            style={{ display: 'inline-block', marginLeft: 4 }}
+                            >
+                                ${seleccionados && seleccionados.reduce((s, i) => s + (i.total || 0), 0)}
+                            </motion.span>
+                        </AnimatePresence>
+                        
                     </section>
                 </div>
                 {openModal && (
