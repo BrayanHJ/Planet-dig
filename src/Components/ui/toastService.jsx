@@ -18,7 +18,7 @@ export function showToast({ severity, summary, detail, life = 3000 }) {
         },
         warn: {
             icon: "line-md:alert-twotone",
-            color: "#eab308"
+            color: "#F97316"
         },
         warning: {
             icon: "line-md:alert-twotone",

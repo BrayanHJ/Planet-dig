@@ -74,39 +74,46 @@ export const ModalVentaBoletos = ({ onClose, onConfirm }) => {
     };
 
     return (
-        <AnimatePresence>
-            <motion.div className="bg-black/50 fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+        <motion.main className="bg-black/50 fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -20, opacity: 0 }}
+            transition={{duration:0.4}}
+        >
+            <motion.div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-4xl p-6"
+                initial={{ y: 200, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 200, opacity: 0 }}
             >
-                <motion.div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-4xl p-6"
-                    initial={{ y: -20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -20, opacity: 0 }}
-                >
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Confirmar Venta de Boletos</h2>
-                        <div className="flex gap-2">
-                            <button onClick={onClose} className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700">Cerrar</button>
-                        </div>
-                    </div>
+                <div className="flex items-center justify-between mb-4">
+                    <motion.h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100"
+                    initial={{ x: 800, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 800, opacity: 0 }}
+                    transition={{duration:0.7}}
+                    >
+                        Confirmar Venta de Boletos
+                    </motion.h2>
+                </div>
 
-                    <div className="overflow-y-auto max-h-[70vh]">
-                        <div className="space-y-4">
-                            {seleccionados.map(item => {
+                <div className="overflow-y-auto max-h-[70vh]">
+                    <div className="space-y-4">
+                        <AnimatePresence mode="popLayout">
+                            {seleccionados.map((item ,i) => {
                                 const meta = (Boletos || []).find(b => b.id_boleto === item.id_boleto) || {};
                                 return (
-                                    <div key={item.id_boleto} className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
+                                    <motion.main key={item.id_boleto} className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow"
+                                    initial={{ x: -800, scale: 0.5 , opacity: 0 }}
+                                    animate={{ x: 0, scale: 1, opacity: 1 }}
+                                    exit={{ x: 800, scale: 0.5, opacity: 0 }}
+                                    transition={{duration:0.5, delay: i * 0.2}}
+                                    >
                                         <div className="flex justify-between items-start mb-2">
                                             <div>
-                                                <h3 className="text-lg font-semibold">{meta.Boleto || `Boleto #${item.id_boleto}`}</h3>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                    {meta.Descripcion || (meta.Paquete ? `Paquete ${meta.Paquete}` : 'Boleto Individual')}
-                                                </p>
+                                                <h3 className="text-2xl font-semibold">{meta.Boleto || `Boleto #${item.id_boleto}`}</h3>
                                             </div>
                                             <div className="text-right">
-                                                <div className="font-semibold">${item.total}</div>
+                                                <div className="font-semibold text-2xl">${item.total}</div>
                                                 <div className="text-sm text-gray-600 dark:text-gray-400">
                                                     Cantidad: {item.cantidad}
                                                 </div>
@@ -114,7 +121,7 @@ export const ModalVentaBoletos = ({ onClose, onConfirm }) => {
                                         </div>
                                         <div className="mt-2 text-sm">
                                             <div className="flex justify-between items-center mb-2">
-                                                <div className="font-medium">Folios asignados:</div>
+                                                <div className="font-medium text-sm">Folios asignados:</div>
                                                 <div className="flex items-center gap-3">
                                                     <div className="flex items-center gap-2">
                                                         <label className="text-sm text-gray-600 dark:text-gray-400">Folio inicial:</label>
@@ -123,7 +130,7 @@ export const ModalVentaBoletos = ({ onClose, onConfirm }) => {
                                                             value={folioEdits[item.id_boleto]?.[-1] ?? item.folios[0] ?? ''}
                                                             onChange={(e) => handleFolioChange(item.id_boleto, e.target.value, -1)}
                                                             onBlur={() => handleFolioBlur(item.id_boleto, -1)}
-                                                            className="bg-gray-100 dark:bg-gray-600 px-2 py-1 rounded w-24 text-sm focus:ring-2 focus:ring-blue-500"
+                                                            className="bg-gray-100 dark:bg-gray-700/45 px-2 py-1 rounded w-24 text-sm focus:ring-2 focus:ring-blue-700"
                                                         />
                                                     </div>
                                                     <button 
@@ -131,74 +138,120 @@ export const ModalVentaBoletos = ({ onClose, onConfirm }) => {
                                                             ...prev,
                                                             [item.id_boleto]: !prev[item.id_boleto]
                                                         }))}
-                                                        className="px-3 py-1 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors shadow-sm"
+                                                        className="px-3 py-1 text-sm bg-violet-700/45 hover:bg-violet-700 text-white rounded transition-colors shadow-sm cursor-pointer"
                                                     >
                                                         {editingFolios[item.id_boleto] ? 'Listo' : 'Editar'}
                                                     </button>
                                                 </div>
                                             </div>
-                                            {editingFolios[item.id_boleto] ? (
-                                                <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg border dark:border-gray-600 shadow-sm">
-                                                    <div className="grid grid-cols-4 gap-3">
-                                                        {item.folios.map((folio, idx) => (
-                                                            <div key={idx} className="flex items-center gap-2">
-                                                                <label className="text-xs text-gray-600 dark:text-gray-400 min-w-[20px]">{idx + 1}:</label>
-                                                                <input
-                                                                    type="number"
-                                                                    value={folioEdits[item.id_boleto]?.[idx] ?? folio}
-                                                                    onChange={(e) => handleFolioChange(item.id_boleto, e.target.value, idx)}
-                                                                    onBlur={() => handleFolioBlur(item.id_boleto, idx)}
-                                                                    className="bg-white dark:bg-gray-800 px-2 py-1 rounded w-full text-sm border dark:border-gray-600 focus:ring-2 focus:ring-blue-500"
-                                                                />
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            ) : (
-                                                <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg border dark:border-gray-600">
-                                                    {item.folios && item.folios.length > 0 ? (
-                                                        <div className="text-gray-700 dark:text-gray-300">
-                                                            {item.folios.join(', ')}
+                                            <AnimatePresence mode="popLayout">
+                                                {editingFolios[item.id_boleto] ? (
+                                                    <motion.div
+                                                        key="edit-mode"
+                                                        className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg border dark:border-gray-600 shadow-sm"
+                                                        initial={{ opacity: 0 }}
+                                                        animate={{ opacity: 1 }}
+                                                        exit={{ opacity: 0 }}
+                                                    >
+                                                        <div className="grid grid-cols-5 gap-2">
+                                                            {item.folios.map((folio, idx) => (
+                                                                <motion.div
+                                                                    key={idx}
+                                                                    className="flex items-center gap-2"
+                                                                    initial={{ y: 150, opacity: 0 }}
+                                                                    animate={{ y: 0, opacity: 1 }}
+                                                                    exit={{ y: 150, opacity: 0 }}
+                                                                    transition={{ duration: 0.2, delay: idx * 0.1, ease: "easeOut" }}
+                                                                >
+                                                                    <motion.label className="text-shadow-sm text-gray-600 dark:text-gray-400 min-w-[15px]"
+                                                                    initial={{ opacity: 0, y: -10 }}
+                                                                    animate={{ opacity: 1, y: 0 }}
+                                                                    exit={{ opacity: 0, y: 10 }}
+                                                                    transition={{ duration: 0.9 }}
+                                                                    >
+                                                                        {idx + 1} :
+                                                                    </motion.label>
+
+                                                                    <motion.input
+                                                                        initial={{ opacity: 0, y: -10 }}
+                                                                        animate={{ opacity: 1, y: 0 }}
+                                                                        exit={{ opacity: 0, y: 10 }}
+                                                                        transition={{ duration: 0.25 }}
+                                                                        key={folioEdits[item.id_boleto]?.[idx]}     // clave dinámica para forzar animación  
+                                                                        type="number"
+                                                                        value={folioEdits[item.id_boleto]?.[idx] ?? folio}
+                                                                        onChange={(e) => handleFolioChange(item.id_boleto, e.target.value, idx)}
+                                                                        onBlur={() => handleFolioBlur(item.id_boleto, idx)}
+                                                                        className="bg-white dark:bg-gray-800 px-2 py-1 rounded w-1/2 text-sm border dark:border-gray-600 focus:ring-2 focus:ring-blue-500"
+                                                                    />
+                                                                </motion.div>
+                                                            ))}
                                                         </div>
-                                                    ) : (
-                                                        <span className="text-yellow-600 dark:text-yellow-400">
-                                                            Pendiente de asignar folios
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            )}
+                                                    </motion.div>
+                                                ) : (
+                                                    <motion.div
+                                                        key="view-mode"
+                                                        className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg border dark:border-gray-600"
+                                                        initial={{ opacity: 0 }}
+                                                        animate={{ opacity: 1 }}
+                                                        exit={{ opacity: 0 }}
+                                                    >
+                                                        {item.folios?.length ? (
+                                                            <div className="text-gray-700 dark:text-gray-300">
+                                                                {item.folios.join(" , ")}
+                                                            </div>
+                                                        ) : (
+                                                            <span className="text-yellow-600 dark:text-yellow-400">
+                                                                Pendiente de asignar folios
+                                                            </span>
+                                                        )}
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
                                         </div>
-                                    </div>
+                                    </motion.main>
                                 );
                             })}
-
-                            <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                                <div className="flex justify-between items-center">
-                                    <div className="text-lg font-semibold">Total Final:</div>
-                                    <div className="text-2xl font-bold">
-                                        ${seleccionados.reduce((sum, item) => sum + (item.total || 0), 0)}
-                                    </div>
-                                </div>
-                            </div>
+                        </AnimatePresence>
+                    </div>
+                </div>
+                <div className="flex justify-between gap-3">
+                    <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg w-3/4">
+                        <div className="flex justify-between items-center">
+                            <motion.p className="text-2xl"
+                            initial={{ y: 50, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: 50, opacity: 0 }}
+                            transition={{duration:0.9}}
+                            >
+                                Total Final:
+                            </motion.p>
+                            <motion.div className="text-2xl font-semibold"
+                            initial={{ x: -500, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -500, opacity: 0 }}
+                            transition={{duration:0.5}}
+                            >
+                                ${seleccionados.reduce((sum, item) => sum + (item.total || 0), 0)}
+                            </motion.div>
                         </div>
                     </div>
-
-                    <div className="mt-6 flex justify-end gap-3">
+                    <section className="mt-6 flex justify-center gap-3">
                         <button 
                             onClick={onClose}
-                            className="px-4 py-2 bg-gray-200 dark:bg-gray-600 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+                            className="px-4 py-2 text-xl bg-gray-200 dark:bg-red-700/45 rounded-lg hover:dark:bg-red-700 transition-colors cursor-pointer hover:scale-110 active:scale-100"
                         >
                             Cancelar
                         </button>
                         <button 
                             onClick={handleConfirm}
-                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                            className="px-4 py-2 text-xl bg-blue-600/45 text-white rounded-lg hover:bg-blue-600 transition-colors cursor-pointer hover:scale-110 active:scale-100"
                         >
-                            Confirmar Venta
+                            Confirmar
                         </button>
-                    </div>
-                </motion.div>
+                    </section>
+                </div>
             </motion.div>
-        </AnimatePresence>
+        </motion.main>
     );
 };

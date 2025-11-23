@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { motion , AnimatePresence } from "framer-motion";
-import { Toaster , toast } from "sonner";
+import {showToast} from "../Components/ui/toastService.jsx"
 import { useInicioStore } from "../Store/InicioStore.jsx";
 import {UserStore} from "../Store/UserStore.jsx";
 import AnimatedPage from "../Components/Animations/AnimatedPage";
@@ -31,17 +31,24 @@ export const Inicio = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!usuario) {
-            toast.error("El campo Usuario es obligatorio");
+            showToast({ severity: 'warn', summary: 'Aviso', detail: 'El campo Usuario es obligatorio' });
             return;
         }
         if (!contrasena) {
-            toast.error("El campo Contraseña es obligatorio");
+            showToast({ severity: 'warn', summary: 'Aviso', detail: 'El campo Contraseña es obligatorio' });
             return;
         }
         try {
             const data = await login(usuario, contrasena);
             if (data.success) {
-                toast.success(data.mensaje || "Inicio de sesión correcto");
+                if (data.success == true)   
+                {
+                    showToast({ severity: 'success', summary: 'Inicio de sesión correcto', detail: data.mensaje});
+                }
+                else
+                {
+                    showToast({ severity: 'error', summary: 'Error', detail: data.mensaje});
+                }
                 setUsuarioform(usuario);
                 setContrasenaform(contrasena);
                 try {
@@ -59,7 +66,7 @@ export const Inicio = () => {
                 }
                 navigate("/Panel");
             } else {
-                toast.error(data.mensaje || "Usuario incorrecto");
+                showToast({ severity: 'error', summary: 'Error', detail: data.mensaje || "Usuario incorrecto" });
             }
         } catch (err) {
             console.error(err);
@@ -70,8 +77,6 @@ export const Inicio = () => {
         <AnimatedPage>
             <main className="flex items-center justify-center
                 text-white dark:text-white min-h-screen w-full flex-col text-center">
-
-                    <Toaster />
 
                 <img src="src/assets/6458e18287853.webp" alt="nothing"  className="fixed top-0 left-0 w-full h-full object-cover" />
 

@@ -1,6 +1,28 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence , useMotionValue, useSpring } from "framer-motion";
 import { BoletosStore } from '../../../Store/BoletosStore.jsx';
 import { useEffect, useState } from 'react';
+
+function AnimatedNumber({ value = 0, precision = 0, prefix = '', className }) {
+    const mv = useMotionValue(Number(value));
+    const spring = useSpring(mv, { stiffness: 170, damping: 26 });
+    const [display, setDisplay] = useState(Number(value));
+
+    useEffect(() => {
+        mv.set(Number(value));
+    }, [value, mv]);
+
+    useEffect(() => {
+        const unsubscribe = spring.onChange((v) => {
+            if (precision > 0) setDisplay(Number(v).toFixed(precision));
+            else setDisplay(Math.round(v));
+        });
+        return () => unsubscribe();
+    }, [spring, precision]);
+
+    return (
+        <span className={className}>{prefix}{display}</span>
+    );
+}
 
 // Modal para selección de boletos
 export const ModalVenta = ({ onClose, onConfirm }) => {
@@ -81,72 +103,138 @@ export const ModalVenta = ({ onClose, onConfirm }) => {
     };
 
     return (
-        <AnimatePresence>
-            <motion.div className="bg-black/50 fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+        <motion.main className="bg-black/50 fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm"
+            initial={{ opacity: 0  }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{duration:0.3}}
+        >
+            <motion.div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-4xl p-6"
+                initial={{ opacity: 0 , y :-400 }}
+                animate={{ opacity: 1 , y :0 }}
+                exit={{ opacity: 0 , y :-800 }}
+                transition={{duration:0.5}}
             >
-                <motion.div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-4xl p-6"
-                    initial={{ y: -20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -20, opacity: 0 }}
-                >
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Seleccione Sus Boletos</h2>
-                        <div className="flex gap-2">
-                            <button onClick={onClose} className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700">Cerrar</button>
-                        </div>
-                    </div>
-                    <div className="overflow-y-auto max-h-[70vh] px-4">
-                        <section className="gap-6 flex flex-col">
-                            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Boletos Individuales</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {Boletos && Boletos.length ? Boletos.filter(b => isNullPackage(b.Paquete)).map(b => (
-                                    <div key={b.id_boleto} className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-4 flex flex-col items-center select-none">
-                                        <div className="text-3xl font-bold text-violet-600 dark:text-violet-400 mb-2">
+                <div className="flex items-center justify-end mb-4">
+                    <motion.h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100"
+                    initial={{ opacity: 0 , y :400 }}
+                    animate={{ opacity: 1 , y :0 }}
+                    exit={{ opacity: 0 , y :-800 }}
+                    >
+                        Seleccione Sus Boletos
+                    </motion.h2>
+                </div>
+                <div className="overflow-y-auto max-h-[70vh] px-4">
+                    <section className="gap-6 flex flex-col">
+                        <motion.h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4"
+                        initial={{ opacity: 0, x: 50 , scale: 0.3 }}
+                        animate={{ opacity: 1, x: 0 , scale: 1 }}
+                        exit={{ opacity: 0, x: 10 , scale: 0.3 }}
+                        transition={{ duration: 1.0 }}
+                        >
+                            Boletos Individuales
+                            </motion.h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <AnimatePresence>
+                                {Boletos && Boletos.length ? Boletos.filter(b => isNullPackage(b.Paquete)).map((b , i) => (
+                                    <motion.div key={b.id_boleto} className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-4 flex flex-col items-center select-none"
+                                    initial={{ opacity: 0, y: -10, scale: 0.5 }}
+                                    animate={{ opacity: 1, y: 0 , scale: 1 }}
+                                    exit={{ opacity: 0, y: 10 , scale: 0.5 }}
+                                    transition={{ duration: .8 , delay: i * 0.25 }}
+                                    >
+
+                                        <motion.div className="text-3xl font-bold text-violet-600 dark:text-violet-400 mb-2"
+                                        initial={{ opacity: 0, y: -50, scale: 0.3 }}
+                                        animate={{ opacity: 1, y: 0 , scale: 1 }}
+                                        exit={{ opacity: 0, y: 10 , scale: 0.3 }}
+                                        transition={{ duration: 1.0 }}
+                                        >
                                             ${b.Precio}
-                                        </div>
-                                        <h3 className="text-lg font-medium text-gray-800 dark:text-gray-100 mb-2">
+                                        </motion.div>
+
+                                        <motion.h3 className="text-lg font-medium text-gray-800 dark:text-gray-100 mb-2"
+                                        initial={{ opacity: 0, y: 50 , scale: 0.3 }}
+                                        animate={{ opacity: 1, y: 0 , scale: 1 }}
+                                        exit={{ opacity: 0, y: 10 , scale: 0.3 }}
+                                        transition={{ duration: 1.0 }}
+                                        >
                                             {b.Boleto}
-                                        </h3>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">
+                                        </motion.h3>
+
+                                        <motion.p className="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center"
+                                        initial={{ opacity: 0, y: 90 , scale: 0.3 }}
+                                        animate={{ opacity: 1, y: 0 , scale: 1 }}
+                                        exit={{ opacity: 0, y: 40 , scale: 0.3 }}
+                                        transition={{ duration: 0.8 }}
+                                        >
                                             {b.Descripcion}
-                                        </p>
+                                        </motion.p>
                                         <div className="flex items-center gap-2">
                                             <button 
                                                 onClick={() => handleChange(b.id_boleto, (cantidades[b.id_boleto] ?? 0) - 1)}
-                                                className="px-3 py-1 bg-violet-600/70 text-white rounded-md hover:bg-violet-700/70 cursor-pointer"
+                                                className="px-3 py-1 bg-violet-500/70 text-white rounded-md hover:bg-violet-700/70 cursor-pointer transition-all duration-300 hover:scale-125 active:scale-50 active:text-amber-300 active:text-1xl"
                                             >
                                                 -
                                             </button>
-                                            <input
-                                                type="number"
-                                                min={0}
-                                                value={cantidades[b.id_boleto] ?? 0}
-                                                onChange={(e) => handleChange(b.id_boleto, e.target.value)}
-                                                className="w-16 text-center border rounded px-2 py-1 bg-transparent text-gray-900 dark:text-white cursor-pointer"
-                                            />
+                                            <div className="relative w-16 border rounded">
+                                                <AnimatePresence mode="popLayout">
+                                                    <motion.input
+                                                    key={cantidades[b.id_boleto] ?? 0}  // <– TRUCO IMPORTANTE
+                                                    type="number"
+                                                    min={0}
+                                                    value={cantidades[b.id_boleto] ?? 0}
+                                                    onChange={(e) => handleChange(b.id_boleto, e.target.value)}
+                                                    initial={{ opacity: 0, y: -10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0, y: 10 }}
+                                                    transition={{ duration: 0.15 }}
+                                                    className="w-16 text-center px-2 py-1 justify-center bg-transparent text-gray-900 dark:text-white"
+                                                    />
+                                                </AnimatePresence>
+                                            </div>
                                             <button 
                                                 onClick={() => handleChange(b.id_boleto, (cantidades[b.id_boleto] ?? 0) + 1)}
-                                                className="px-3 py-1 bg-violet-600/70 text-white rounded-md hover:bg-violet-700/70 cursor-pointer"
+                                                className="px-3 py-1 bg-violet-600/70 text-white rounded-md hover:bg-violet-700/70 cursor-pointer transition-all duration-300 hover:scale-125 active:scale-50 active:text-amber-300 active:text-1xl"
                                             >
                                                 +
                                             </button>
                                         </div>
-                                        {(cantidades[b.id_boleto] ?? 0) > 0 && (
-                                            <p className="mt-2 text-sm text-violet-600 dark:text-violet-400">
-                                                Subtotal: ${subtotalFor(b)}
-                                            </p>
-                                        )}
-                                    </div>
+                                        <AnimatePresence>
+                                            {(cantidades[b.id_boleto] ?? 0) > 0 && (
+                                                <motion.p className="mt-2 text-sm text-violet-600 dark:text-violet-400"
+                                                initial={{ opacity: 0, y: -70, scale: 0.3 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, y: -70, scale: 0.3 }}
+                                                transition={{ duration: 0.5 }}
+                                                >
+                                                    Subtotal:
+                                                    <AnimatedNumber value={subtotalFor(b)} prefix="$" precision={2}/>
+                                                </motion.p>
+                                            )}
+                                        </AnimatePresence>
+                                    </motion.div>
                                 )) : null}
-                            </div>
+                            </AnimatePresence>
+                        </div>
 
-                            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-8 mb-4">Paquetes de Boletos</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <motion.h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-8 mb-4"
+                        initial={{ opacity: 0, x: 50 , scale: 0.3 }}
+                        animate={{ opacity: 1, x: 0 , scale: 1 }}
+                        exit={{ opacity: 0, x: 10 , scale: 0.3 }}
+                        transition={{ duration: 1.0 }}
+                        >
+                            Paquetes de Boletos
+                        </motion.h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <AnimatePresence>
                                 {Boletos && Boletos.length ? Boletos.filter(b => !isNullPackage(b.Paquete)).map(b => (
-                                    <div key={b.id_boleto} className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-4 flex flex-col items-center select-none">
+                                    <motion.div key={b.id_boleto} className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-4 flex flex-col items-center select-none"
+                                    initial={{ opacity: 0, y: -10, scale: 0.5 }}
+                                    animate={{ opacity: 1, y: 0 , scale: 1 }}
+                                    exit={{ opacity: 0, y: 10 , scale: 0.5 }}
+                                    transition={{ duration: 0.8 }}
+                                    >
                                         <div className="text-3xl font-bold text-violet-600 dark:text-violet-400 mb-2">
                                             ${b.Precio}
                                         </div>
@@ -163,13 +251,22 @@ export const ModalVenta = ({ onClose, onConfirm }) => {
                                             >
                                                 -
                                             </button>
-                                            <input
-                                                type="number"
-                                                min={0}
-                                                value={cantidades[b.id_boleto] ?? 0}
-                                                onChange={(e) => handleChange(b.id_boleto, e.target.value)}
-                                                className="w-16 text-center border rounded px-2 py-1 bg-transparent text-gray-900 dark:text-white cursor-pointer"
-                                            />
+                                            <div className="relative w-16 border rounded">
+                                                <AnimatePresence mode="popLayout">
+                                                    <motion.input
+                                                    key={cantidades[b.id_boleto] ?? 0}  // <– TRUCO IMPORTANTE
+                                                    type="number"
+                                                    min={0}
+                                                    value={cantidades[b.id_boleto] ?? 0}
+                                                    onChange={(e) => handleChange(b.id_boleto, e.target.value)}
+                                                    initial={{ opacity: 0, y: -10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0, y: 10 }}
+                                                    transition={{ duration: 0.15 }}
+                                                    className="w-16 text-center px-2 py-1 justify-center bg-transparent text-gray-900 dark:text-white"
+                                                    />
+                                                </AnimatePresence>
+                                            </div>
                                             <button 
                                                 onClick={() => handleChange(b.id_boleto, (cantidades[b.id_boleto] ?? 0) + 1)}
                                                 className="px-3 py-1 bg-violet-600/70 text-white rounded-md hover:bg-violet-700/70 cursor-pointer"
@@ -177,26 +274,52 @@ export const ModalVenta = ({ onClose, onConfirm }) => {
                                                 +
                                             </button>
                                         </div>
-                                        {(cantidades[b.id_boleto] ?? 0) > 0 && (
-                                            <p className="mt-2 text-sm text-violet-600 dark:text-violet-400">
-                                                Subtotal: ${subtotalFor(b)}
-                                            </p>
-                                        )}
-                                    </div>
+                                        <AnimatePresence>
+                                            {(cantidades[b.id_boleto] ?? 0) > 0 && (
+                                                <motion.p className="mt-2 text-sm text-violet-600 dark:text-violet-400"
+                                                initial={{ opacity: 0, y: -70, scale: 0.3 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, y: -70, scale: 0.3 }}
+                                                transition={{ duration: 0.5 }}
+                                                >
+                                                    Subtotal:
+                                                    <AnimatedNumber value={subtotalFor(b)} prefix="$" precision={2}/>
+                                                </motion.p>
+                                            )}
+                                        </AnimatePresence>
+                                    </motion.div>
                                 )) : null}
-                            </div>
-                        </section>
-                    </div>
+                            </AnimatePresence>
 
-                    <div className="mt-4 flex items-center justify-between">
-                        <div className="text-lg font-semibold">Total: ${total()}</div>
-                        <div className="flex gap-2">
-                            <button onClick={onClose} className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700">Cancelar</button>
-                            <button onClick={handleConfirm} className="px-4 py-2 rounded bg-green-600 text-white">Confirmar</button>
                         </div>
+                    </section>
+                </div>
+
+                <div className="mt-4 flex items-center justify-between">
+                    <div className="text-2xl font-semibold gap-2 justify-center text-center flex flex-row">
+                        <p>Total:</p>   
+                        <AnimatedNumber value={total()} prefix="$" precision={2}/>
                     </div>
-                </motion.div>
+                    <div className="flex gap-4">
+                        <motion.button onClick={onClose} className="text-xl px-4 py-2 rounded-xl border-2 border-white dark:bg-gray-700 cursor-pointer hover:bg-red-600 hover:scale-110 active:scale-100"
+                        initial={{ opacity: 0, y: -70, scale: 0.3 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -70, scale: 0.3 }}
+                        transition={{ duration: 0.8 }}
+                        >
+                            Cancelar
+                            </motion.button>
+                        <motion.button onClick={handleConfirm} className="text-xl px-4 py-2 rounded-xl border-2 border-white bg-blue-600/45 cursor-pointer hover:bg-blue-600 hover:scale-110 active:scale-100"
+                        initial={{ opacity: 0, y: -70, scale: 0.3 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -70, scale: 0.3 }}
+                        transition={{ duration: 0.8 }}
+                        >
+                            Confirmar
+                        </motion.button>
+                    </div>
+                </div>
             </motion.div>
-        </AnimatePresence>
+        </motion.main>
     );
 }
