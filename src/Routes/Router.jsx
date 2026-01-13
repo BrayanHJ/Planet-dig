@@ -12,15 +12,16 @@ import {Usuarios} from "../pages/Usuarios.jsx";
 import { RegistroUsuarios } from "../pages/RegistroUsuarios.jsx";
 import {ActividadesLog} from "../pages/ActividadesLog.jsx";
 import { Boletos } from "../pages/Boletos.jsx";
+import { InicioSecion } from "../pages/InicioSecion.jsx";
 
 export function MyRouter() {
     return (
         <BrowserRouter>
             <Routes>
 
-
                 <Route index element={<Inicio />} />
                 <Route path="/" element={<Inicio />} />
+                <Route path="/Login" element={<InicioSecion />} />
                 <Route path="/PlanetarioDigital" element={<Navigate to="/external-site/Pagina-Web/index.html" replace />}/>
                 <Route path="/Panel" element={<MainLayouts />}>
                     <Route index element={<HomePage />} />

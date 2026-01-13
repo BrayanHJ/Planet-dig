@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "nombre": "Inflable de castillo",
+    "precio": 600,
+    "dimensiones": "4m alto • 8m largo • 4m ancho",
+    "img": "/backend/data/assets/inflables/castillo.jpg"
+  },
+  {
+    "id": 2,
+    "nombre": "Inflable de princesas con piscina",
+    "precio": 600,
+    "dimensiones": "4m alto • 8m largo • 3m ancho",
+    "img": "/backend/data/assets/inflables/princesa_piscina.jpg"
+  },
+  {
+    "id": 3,
+    "nombre": "Inflable de Mickey Mouse",
+    "precio": 600,
+    "dimensiones": "5m alto • 7m largo • 5m ancho",
+    "img": "/backend/data/assets/inflables/mickey_mouse.jpeg"
+  },
+  {
+    "id": 4,
+    "nombre": "Inflable de barco",
+    "precio": 600,
+    "dimensiones": "3m alto • 5m largo • 3m ancho",
+    "img": "/backend/data/assets/inflables/barco.jpg"
+  },
+  {
+    "id": 5,
+    "nombre": "Brincolín Jumbo",
+    "precio": 450,
+    "dimensiones": "3m alto • Radio 1.80m",
+    "img": "/backend/data/assets/brincolines/jumbo.jpeg"
+  },
+  {
+    "id": 6,
+    "nombre": "Brincolín Grande",
+    "precio": 400,
+    "dimensiones": "3m alto • Radio 1.5m",
+    "img": "/backend/data/assets/brincolines/grande.jpg"
+  },
+  {
+    "id": 7,
+    "nombre": "Brincolín Mini",
+    "precio": 450,
+    "dimensiones": "2.5m alto • Radio 1.2m",
+    "img": "/backend/data/assets/brincolines/mini.jpg"
+  },
+  {
+    "id": 8,
+    "nombre": "Sillas",
+    "precio": "Silla: $6 | Mesa con 10 sillas: $100",
+    "dimensiones": "",
+    "img": "/backend/data/assets/mobiliario/sillas.jpg"
+  },
+  {
+    "id": 9,
+    "nombre": "Futbolito",
+    "precio": 600,
+    "dimensiones": "140cm largo • 70cm ancho • 80cm alto",
+    "img": "/backend/data/assets/juegos/futbolito.jpg"
+  },
+  {
+    "id": 10,
+    "nombre": "Mesa de Hockey de Aire",
+    "precio": 600,
+    "dimensiones": "150cm largo • 80cm ancho • 80cm alto",
+    "img": "/backend/data/assets/juegos/hockye.jpg"
+  }
+]
